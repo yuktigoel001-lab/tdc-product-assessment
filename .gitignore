@@ -39,3 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# secrets: API keys live in .env.local and must never be committed
+.env.local
+# allow the empty template that shows which variables are needed
+!.env.example

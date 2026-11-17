@@ -1,26 +1,104 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/*
+ * The Date Crew look: warm, premium, calm.
+ * Brand colours are defined once here and used everywhere through Tailwind
+ * classes like `bg-forest`, `text-gold`, `bg-cream`.
+ */
 
 @theme inline {
+  /* Brand palette */
+  --color-forest: #244c3c;
+  --color-forest-deep: #1b3a2f;
+  --color-sage: #386058;
+  --color-gold: #ac7121;
+  --color-gold-light: #ebc796;
+  --color-cream: #f9efe1;
+  --color-cream-light: #fff9f1;
+  --color-page: #fafaf9;
+  --color-ink: #1b1b1b;
+  --color-ink-muted: #57534d;
+  --color-ink-subtle: #79716b;
+
+  /* Status colours: muted and accessible */
+  --color-status-new-bg: #f1f0ee;
+  --color-status-new-fg: #57534d;
+  --color-status-followup-bg: #fbf0dc;
+  --color-status-followup-fg: #8a5a17;
+  --color-status-ready-bg: #e6efe9;
+  --color-status-ready-fg: #244c3c;
+
+  /* Fonts */
+  --font-sans: var(--font-inter);
+  --font-serif: var(--font-fraunces);
+  --font-heading: var(--font-fraunces);
+
+  /* shadcn/ui tokens, mapped to the brand palette */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+:root {
+  --background: #fafaf9;
+  --foreground: #1b1b1b;
+  --card: #ffffff;
+  --card-foreground: #1b1b1b;
+  --popover: #ffffff;
+  --popover-foreground: #1b1b1b;
+  --primary: #244c3c;
+  --primary-foreground: #fff9f1;
+  --secondary: #f9efe1;
+  --secondary-foreground: #244c3c;
+  --muted: #f3f1ee;
+  --muted-foreground: #57534d;
+  --accent: #f9efe1;
+  --accent-foreground: #244c3c;
+  --destructive: #a63d2f;
+  --border: #e8e4de;
+  --input: #ddd8d0;
+  --ring: #386058;
+  /* 12px card corners (cards use radius × 1.4) */
+  --radius: 0.5357rem;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
   }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  html {
+    @apply font-sans;
+  }
+  body {
+    @apply bg-page text-ink;
+  }
+  h1,
+  h2,
+  h3 {
+    @apply font-serif font-normal tracking-tight;
+  }
 }
