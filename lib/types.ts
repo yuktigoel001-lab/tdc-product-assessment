@@ -55,7 +55,7 @@ export type OriginalForm = {
   blobKey?: string;
 };
 
-export type PortfolioStatus = "new" | "needs_follow_up" | "ready";
+export type PortfolioStatus = "new" | "in_review" | "needs_follow_up" | "ready";
 
 export type Portfolio = {
   id: string;

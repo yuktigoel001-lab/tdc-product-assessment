@@ -25,6 +25,8 @@
   /* Status colours: muted and accessible */
   --color-status-new-bg: #f1f0ee;
   --color-status-new-fg: #57534d;
+  --color-status-review-bg: #eaf0ee;
+  --color-status-review-fg: #386058;
   --color-status-followup-bg: #fbf0dc;
   --color-status-followup-fg: #8a5a17;
   --color-status-ready-bg: #e6efe9;

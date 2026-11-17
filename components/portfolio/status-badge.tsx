@@ -4,12 +4,14 @@ import { cn } from "@/lib/utils";
 
 const STYLES: Record<PortfolioStatus, string> = {
   new: "bg-status-new-bg text-status-new-fg",
+  in_review: "bg-white text-status-review-fg ring-1 ring-sage/30 ring-inset",
   needs_follow_up: "bg-status-followup-bg text-status-followup-fg",
   ready: "bg-status-ready-bg text-status-ready-fg",
 };
 
 const DOTS: Record<PortfolioStatus, string> = {
   new: "bg-ink-subtle",
+  in_review: "bg-sage/60",
   needs_follow_up: "bg-gold",
   ready: "bg-sage",
 };

@@ -15,7 +15,7 @@ import type { PortfolioStatus } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 type Filter = "all" | PortfolioStatus;
-const FILTERS: Filter[] = ["all", "needs_follow_up", "new", "ready"];
+const FILTERS: Filter[] = ["all", "new", "in_review", "needs_follow_up", "ready"];
 
 export default function DashboardPage() {
   const { viewingAs } = useViewingAs();
@@ -33,7 +33,7 @@ export default function DashboardPage() {
   );
 
   const counts = useMemo(() => {
-    const c: Record<Filter, number> = { all: mine.length, new: 0, needs_follow_up: 0, ready: 0 };
+    const c: Record<Filter, number> = { all: mine.length, new: 0, in_review: 0, needs_follow_up: 0, ready: 0 };
     mine.forEach((p) => c[portfolioStatus(p)]++);
     return c;
   }, [mine]);
