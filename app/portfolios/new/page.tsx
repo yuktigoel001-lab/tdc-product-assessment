@@ -3,16 +3,14 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Check, ClipboardList, Download, Eye, FileText, Loader2, Sparkles, Upload, X } from "lucide-react";
-import { FormPreviewDialog } from "@/components/intake/form-preview-dialog";
-import { StandardFormDialog } from "@/components/intake/standard-form-dialog";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { ArrowLeft, Check, ClipboardList, Download, FileText, Loader2, Sparkles, Upload, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { buildPortfolio, newPortfolioId } from "@/lib/build-portfolio";
 import { saveFormFile } from "@/lib/form-files";
 import { checkIntakeFile, formatBytes, intakeKind } from "@/lib/intake-file";
 import { CURRENT_MATCHMAKER, matchmakerName } from "@/lib/matchmakers";
-import { BLANK_FORM, NON_STANDARD_SAMPLE, sampleUrl, STANDARD_SAMPLE } from "@/lib/samples";
+import { BLANK_FORM, sampleUrl, STANDARD_SAMPLE } from "@/lib/samples";
 import type { SortResponse } from "@/lib/sort-schema";
 import { addPortfolio } from "@/lib/store";
 import { cn } from "@/lib/utils";
@@ -53,20 +51,6 @@ export default function NewPortfolioPage() {
     setFile(null);
     setError(null);
     if (fileInput.current) fileInput.current.value = "";
-    if (clientName === STANDARD_SAMPLE.clientName) setClientName("");
-  }
-
-  /** Loads the sample filled form exactly as if the matchmaker had uploaded it. */
-  async function useSampleForm() {
-    setError(null);
-    try {
-      const res = await fetch(sampleUrl(STANDARD_SAMPLE.fileName));
-      if (!res.ok) throw new Error();
-      setFile(new File([await res.blob()], STANDARD_SAMPLE.fileName, { type: STANDARD_SAMPLE.mimeType }));
-      if (!clientName.trim()) setClientName(STANDARD_SAMPLE.clientName);
-    } catch {
-      setError("Couldn't load the sample form. Please try again.");
-    }
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -131,7 +115,7 @@ export default function NewPortfolioPage() {
       </div>
 
       <form onSubmit={handleSubmit} className="relative rounded-xl border border-border bg-white">
-        <fieldset disabled={busy} className="space-y-7 p-6">
+        <fieldset disabled={busy} className="space-y-6 p-6">
           <div className="grid gap-4 sm:grid-cols-[1fr_auto]">
             <label className="space-y-1.5">
               <span className="text-sm font-medium text-ink">Client name</span>
@@ -154,44 +138,9 @@ export default function NewPortfolioPage() {
             </div>
           </div>
 
-          {/* ---------- 1. The standard form ---------- */}
-          <section aria-labelledby="standard-form-heading" className="space-y-3">
-            <h2 id="standard-form-heading" className="flex items-center gap-2 font-sans text-sm font-semibold text-ink">
-              <StepNumber n={1} /> TDC standard intake form (v1)
-            </h2>
-            <div className="rounded-lg border border-sage/25 bg-status-ready-bg/40 p-4">
-              <p className="flex gap-2.5 text-sm text-forest">
-                <ClipboardList className="mt-0.5 size-4 shrink-0" aria-hidden />
-                Assumes every client fills in TDC&apos;s standard intake form (v1), so every client is asked the same
-                questions, whichever matchmaker they have.
-              </p>
-              <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 pl-6.5">
-                <a
-                  href={BLANK_FORM.url}
-                  download={BLANK_FORM.fileName}
-                  className={buttonVariants({ variant: "outline", size: "sm", className: "bg-white" })}
-                >
-                  <Download /> Download blank template
-                </a>
-                <StandardFormDialog
-                  trigger={(open) => (
-                    <button
-                      type="button"
-                      onClick={open}
-                      className="inline-flex cursor-pointer items-center gap-1 text-sm font-medium text-forest underline underline-offset-4 hover:text-sage"
-                    >
-                      <Eye className="size-3.5" aria-hidden /> Preview
-                    </button>
-                  )}
-                />
-              </div>
-            </div>
-          </section>
-
-          {/* ---------- 2. The client's filled form ---------- */}
           <section aria-labelledby="upload-heading" className="space-y-3">
-            <h2 id="upload-heading" className="flex items-center gap-2 font-sans text-sm font-semibold text-ink">
-              <StepNumber n={2} /> Upload the client&apos;s filled form
+            <h2 id="upload-heading" className="font-sans text-sm font-medium text-ink">
+              Upload the client&apos;s filled intake form
             </h2>
 
             {file ? (
@@ -199,28 +148,7 @@ export default function NewPortfolioPage() {
                 <FileText className="size-5 shrink-0 text-gold" aria-hidden />
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-sm font-medium text-ink">{file.name}</p>
-                  <p className="flex flex-wrap items-center gap-x-2 text-xs text-ink-subtle">
-                    {formatBytes(file.size)}
-                    {intakeKind(file) === "text" && (
-                      <>
-                        <span aria-hidden>·</span>
-                        <FormPreviewDialog
-                          load={() => file.text()}
-                          fileName={file.name}
-                          title="Client's filled form"
-                          trigger={(open) => (
-                            <button
-                              type="button"
-                              onClick={open}
-                              className="inline-flex cursor-pointer items-center gap-1 font-medium text-forest underline underline-offset-4 hover:text-sage"
-                            >
-                              <Eye className="size-3" aria-hidden /> Preview
-                            </button>
-                          )}
-                        />
-                      </>
-                    )}
-                  </p>
+                  <p className="text-xs text-ink-subtle">{formatBytes(file.size)}</p>
                 </div>
                 <Button type="button" size="icon-sm" variant="ghost" aria-label="Remove file" onClick={removeFile}>
                   <X />
@@ -258,26 +186,28 @@ export default function NewPortfolioPage() {
               </label>
             )}
 
-            <div className="space-y-1 text-xs text-ink-subtle">
-              <p>
-                No form handy?{" "}
-                <button
-                  type="button"
-                  onClick={useSampleForm}
-                  className="cursor-pointer font-medium text-forest underline underline-offset-4 hover:text-sage"
-                >
-                  Use a sample filled form ({STANDARD_SAMPLE.clientName})
-                </button>
-              </p>
-              <p>
+            <div className="space-y-1.5 text-sm text-ink-muted">
+              <p className="flex flex-wrap items-center gap-x-1.5">
+                <ClipboardList className="size-4 shrink-0 text-forest" aria-hidden />
+                Assumes every client fills in TDC&apos;s standard intake form (v1).
                 <a
-                  href={sampleUrl(NON_STANDARD_SAMPLE.fileName)}
-                  download={NON_STANDARD_SAMPLE.fileName}
+                  href={BLANK_FORM.url}
+                  download={BLANK_FORM.fileName}
                   className="inline-flex items-center gap-1 font-medium text-forest underline underline-offset-4 hover:text-sage"
                 >
-                  <Download className="size-3" aria-hidden /> Try a non-standard form
-                </a>{" "}
-                · downloads {NON_STANDARD_SAMPLE.clientName}&apos;s email; upload it to see the warning.
+                  <Download className="size-3.5" aria-hidden /> Download blank template
+                </a>
+              </p>
+              <p className="flex flex-wrap items-center gap-x-1.5">
+                <Download className="size-4 shrink-0 text-forest" aria-hidden />
+                <a
+                  href={sampleUrl(STANDARD_SAMPLE.fileName)}
+                  download={STANDARD_SAMPLE.fileName}
+                  className="font-medium text-forest underline underline-offset-4 hover:text-sage"
+                >
+                  Download a sample filled form to test this flow
+                </a>
+                <span className="text-ink-subtle">({STANDARD_SAMPLE.clientName})</span>
               </p>
             </div>
           </section>
@@ -299,14 +229,6 @@ export default function NewPortfolioPage() {
         {busy && <LoadingOverlay stage={stage} />}
       </form>
     </div>
-  );
-}
-
-function StepNumber({ n }: { n: number }) {
-  return (
-    <span className="flex size-5 items-center justify-center rounded-full bg-forest text-[0.7rem] font-semibold text-cream-light">
-      {n}
-    </span>
   );
 }
 

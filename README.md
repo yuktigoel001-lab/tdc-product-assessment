@@ -35,17 +35,15 @@ Status updates on its own: **New** → **In review** → **Needs follow-up** (wh
 
 ## Try it in 2 minutes
 
-Everything starts on **New portfolio**, which follows the real flow: send the client the standard form, then upload it once they've filled it in.
+Everything starts on **New portfolio**, which follows the real flow: the matchmaker sends the client TDC's standard form, then uploads it once it comes back filled in.
 
-1. **Download the blank template:** in section 1, click **Download blank template** to get TDC's standard intake form (v1) as a PDF, the form every client fills in. (**Preview** shows the same questions on screen.)
-2. **Use the sample filled form, or upload it:** in section 2, click **Use a sample filled form (Vikram Sethi)**. It loads as if you'd uploaded it, fills in the client name, and **Preview** shows his answers. You can also download that file and upload it yourself; the app recognises it either way.
-3. **Create the portfolio:** click **Create portfolio and sort with AI**. Vikram's portfolio opens with deal-breakers, soft rules and 4 follow-up questions:
+1. **Download the blank template:** under the upload area, click **Download blank template** to get TDC's standard intake form (v1) as a PDF, the form every client fills in.
+2. **Download the sample filled form:** click **Download a sample filled form to test this flow**. It's the standard form, filled in by a sample client, Vikram Sethi.
+3. **Upload it and create the portfolio:** type a client name (e.g. *Vikram Sethi*), drop the downloaded file into the upload area (or click **browse**), then click **Create portfolio and sort with AI**. The app recognises the sample and opens Vikram's portfolio with deal-breakers, soft rules and 4 follow-up questions:
    - three contradictions: Mumbai only vs moving abroad; age 25 to 28 vs 10+ years' experience; vegetarian vs sushi;
    - one importance clash: he marked non-smoking as only **Nice to have**, but wrote *"Absolutely no smokers"*. The AI keeps his mark (it stays a soft rule) and asks instead.
 4. **Resolve a follow-up:** in the side panel, click **Mark resolved** on a question, add a note (e.g. *"A non-smoker is a must"*), then use **Update the related preference** to edit it or move it to deal-breakers. Every step appears in the **client log**.
 5. **Confirm preferences until the status is Ready:** resolve the other follow-ups, then click **Confirm all** on each section (or confirm, edit and move them one by one). The status moves from *Needs follow-up* to *In review* to **Ready**.
-
-**Test the "not the standard form" warning:** in section 2, click **Try a non-standard form** to download a free-form email from a client (Neha Iyengar), then upload it and create the portfolio. It opens with a warning that the file doesn't look like TDC's standard intake form, and sorts what it can.
 
 Any other file shows a message that live AI sorting needs an API key, since this prototype runs on demo data only. The dashboard also has 4 mock clients to explore (try **Rohan Mehta**, who needs a follow-up). **Reset demo data** in the footer puts everything back.
 
@@ -60,7 +58,7 @@ Any other file shows a message that live AI sorting needs an API key, since this
   - Doesn't matter → not added
   - "Is there anything that's a definite no?" → deal-breakers. Other free text and "Anything to add?" notes → soft rules.
   - The AI never overrides the client's mark. When the wording disagrees with the mark, it raises a follow-up question instead.
-- **If a file isn't the standard form**, the portfolio shows a warning ("This doesn't look like TDC's standard intake form. Results may be incomplete.") and sorts what it can. (Try it with the downloadable non-standard form on **New portfolio**.)
+- **If a file isn't the standard form**, the portfolio shows a warning ("This doesn't look like TDC's standard intake form. Results may be incomplete.") and sorts what it can.
 - **Only the matchmaker's side is built.** Sending the form to the client and the client filling it in happen outside the app.
 - **One matchmaker's dashboard.** The app is Matchmaker A's view (set in [`lib/matchmakers.ts`](lib/matchmakers.ts)), standing in for a real login. Matchmaker B's clients exist in the data but aren't shown.
 
