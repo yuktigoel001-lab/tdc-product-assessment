@@ -1,6 +1,11 @@
-import type { ReactNode } from "react";
-import { Check, PencilLine, Sparkles } from "lucide-react";
-import { CATEGORIES } from "@/lib/categories";
+"use client";
+
+import { useState, type ReactNode } from "react";
+import { ArrowDownUp, Check, CheckCheck, PencilLine, Sparkles } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import type { PreferenceEdit } from "@/lib/actions";
+import { CATEGORIES, type CategoryKey } from "@/lib/categories";
 import type { Preference, PreferenceStatus, PreferenceType } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
@@ -26,9 +31,105 @@ export function PreferenceStatusBadge({ status }: { status: PreferenceStatus }) 
   );
 }
 
-export function PreferenceRow({ preference, actions }: { preference: Preference; actions?: ReactNode }) {
+/** Everything the section needs to make preferences editable. Leave it out for a read-only view. */
+export type PreferenceHandlers = {
+  editingId: string | null;
+  onConfirm: (id: string) => void;
+  onStartEdit: (id: string) => void;
+  onCancelEdit: () => void;
+  onSaveEdit: (id: string, edit: PreferenceEdit) => void;
+  onMove: (id: string) => void;
+  onConfirmAll: (type: PreferenceType) => void;
+};
+
+function PreferenceEditor({
+  preference,
+  onSave,
+  onCancel,
+}: {
+  preference: Preference;
+  onSave: (edit: PreferenceEdit) => void;
+  onCancel: () => void;
+}) {
+  const [label, setLabel] = useState(preference.label);
+  const [detail, setDetail] = useState(preference.detail ?? "");
+  const [category, setCategory] = useState<CategoryKey>(preference.category);
+
   return (
-    <li className="flex flex-col gap-2 py-3.5 first:pt-0 last:pb-0 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+    <form
+      className="w-full space-y-3 rounded-lg border border-gold-light bg-cream-light p-3.5"
+      onSubmit={(e) => {
+        e.preventDefault();
+        onSave({ label, detail, category });
+      }}
+      onKeyDown={(e) => e.key === "Escape" && onCancel()}
+    >
+      <div className="grid gap-3 sm:grid-cols-[1fr_12rem]">
+        <label className="space-y-1">
+          <span className="text-xs font-medium text-ink-muted">Preference</span>
+          <Input value={label} onChange={(e) => setLabel(e.target.value)} autoFocus required className="bg-white" />
+        </label>
+        <label className="space-y-1">
+          <span className="text-xs font-medium text-ink-muted">Category</span>
+          <select
+            value={category}
+            onChange={(e) => setCategory(e.target.value as CategoryKey)}
+            className="h-8 w-full rounded-lg border border-input bg-white px-2 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
+          >
+            {CATEGORIES.map((c) => (
+              <option key={c.key} value={c.key}>
+                {c.label}
+              </option>
+            ))}
+          </select>
+        </label>
+      </div>
+      <label className="block space-y-1">
+        <span className="text-xs font-medium text-ink-muted">Extra context (optional)</span>
+        <Input
+          value={detail}
+          onChange={(e) => setDetail(e.target.value)}
+          placeholder="e.g. Confirmed on call, flexible for the right person"
+          className="bg-white"
+        />
+      </label>
+      <p className="text-xs text-ink-subtle">
+        From the form: <q className="italic">{preference.sourceQuote}</q>
+      </p>
+      <div className="flex gap-2">
+        <Button type="submit" size="sm">
+          Save
+        </Button>
+        <Button type="button" variant="ghost" size="sm" onClick={onCancel}>
+          Cancel
+        </Button>
+      </div>
+    </form>
+  );
+}
+
+function PreferenceRow({ preference, handlers }: { preference: Preference; handlers?: PreferenceHandlers }) {
+  const editing = handlers?.editingId === preference.id;
+
+  if (editing && handlers) {
+    return (
+      <li id={`pref-${preference.id}`} className="scroll-mt-24 py-3.5 first:pt-0 last:pb-0">
+        <PreferenceEditor
+          preference={preference}
+          onCancel={handlers.onCancelEdit}
+          onSave={(edit) => handlers.onSaveEdit(preference.id, edit)}
+        />
+      </li>
+    );
+  }
+
+  const moveLabel = preference.type === "deal_breaker" ? "Move to soft rules" : "Move to deal-breakers";
+
+  return (
+    <li
+      id={`pref-${preference.id}`}
+      className="flex scroll-mt-24 flex-col gap-2.5 py-3.5 first:pt-0 last:pb-0"
+    >
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
           <p className="font-medium text-ink">{preference.label}</p>
@@ -40,7 +141,26 @@ export function PreferenceRow({ preference, actions }: { preference: Preference;
           <q className="italic">{preference.sourceQuote}</q>
         </blockquote>
       </div>
-      {actions && <div className="flex shrink-0 flex-wrap gap-1.5">{actions}</div>}
+      {handlers && (
+        <div className="flex shrink-0 flex-wrap gap-1.5">
+          {preference.status === "ai_suggested" && (
+            <Button
+              size="xs"
+              variant="outline"
+              className="border-sage/40 text-forest hover:bg-status-ready-bg"
+              onClick={() => handlers.onConfirm(preference.id)}
+            >
+              <Check /> Confirm
+            </Button>
+          )}
+          <Button size="xs" variant="outline" onClick={() => handlers.onStartEdit(preference.id)}>
+            <PencilLine /> Edit
+          </Button>
+          <Button size="xs" variant="outline" onClick={() => handlers.onMove(preference.id)} title={moveLabel}>
+            <ArrowDownUp /> {moveLabel}
+          </Button>
+        </div>
+      )}
     </li>
   );
 }
@@ -67,15 +187,14 @@ const COPY: Record<PreferenceType, { title: ReactNode; hint: string }> = {
 export function PreferenceSection({
   type,
   preferences,
-  headerAction,
-  renderActions,
+  handlers,
 }: {
   type: PreferenceType;
   preferences: Preference[];
-  headerAction?: ReactNode;
-  renderActions?: (p: Preference) => ReactNode;
+  handlers?: PreferenceHandlers;
 }) {
   const items = preferences.filter((p) => p.type === type);
+  const unconfirmed = items.filter((p) => p.status === "ai_suggested").length;
   // Group by category, in the standard category order.
   const groups = CATEGORIES.map((c) => ({ ...c, items: items.filter((p) => p.category === c.key) })).filter(
     (g) => g.items.length > 0,
@@ -85,10 +204,7 @@ export function PreferenceSection({
   return (
     <section
       aria-labelledby={`${type}-heading`}
-      className={cn(
-        "rounded-xl border bg-white",
-        isDealBreaker ? "border-gold-light" : "border-border",
-      )}
+      className={cn("rounded-xl border bg-white", isDealBreaker ? "border-gold-light" : "border-border")}
     >
       <header
         className={cn(
@@ -110,7 +226,18 @@ export function PreferenceSection({
           </h2>
           <p className="mt-0.5 text-sm text-ink-muted">{COPY[type].hint}</p>
         </div>
-        {headerAction}
+        {handlers &&
+          (unconfirmed > 0 ? (
+            <Button size="sm" onClick={() => handlers.onConfirmAll(type)}>
+              <CheckCheck /> Confirm all ({unconfirmed})
+            </Button>
+          ) : (
+            items.length > 0 && (
+              <span className="inline-flex items-center gap-1.5 text-sm text-status-ready-fg">
+                <CheckCheck className="size-4" aria-hidden /> All reviewed
+              </span>
+            )
+          ))}
       </header>
 
       {groups.length === 0 ? (
@@ -124,7 +251,7 @@ export function PreferenceSection({
               </h3>
               <ul className="divide-y divide-border/70">
                 {g.items.map((p) => (
-                  <PreferenceRow key={p.id} preference={p} actions={renderActions?.(p)} />
+                  <PreferenceRow key={p.id} preference={p} handlers={handlers} />
                 ))}
               </ul>
             </div>

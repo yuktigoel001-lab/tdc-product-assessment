@@ -2,6 +2,10 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
+/* The app is light-only: dark styles apply only inside a `.dark` element (never used),
+   so a visitor's dark-mode setting doesn't grey out inputs and buttons. */
+@custom-variant dark (&:is(.dark *));
+
 /*
  * The Date Crew look: warm, premium, calm.
  * Brand colours are defined once here and used everywhere through Tailwind
