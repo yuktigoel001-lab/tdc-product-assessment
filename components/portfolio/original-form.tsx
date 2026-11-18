@@ -1,11 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { ExternalLink, FileText } from "lucide-react";
+import { BadgeCheck, ExternalLink, FileText, TriangleAlert } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { SideCard } from "./side-card";
 import { formatDate } from "@/lib/format";
+import { INTAKE_FORM_VERSION } from "@/lib/intake-form";
 import type { OriginalForm } from "@/lib/types";
 
 /** Shows the attached intake form, and opens it: text in a pop-up, PDFs in a new tab. */
@@ -70,6 +71,18 @@ export function OriginalFormCard({ form }: { form: OriginalForm }) {
           <p className="text-xs text-ink-subtle">
             {isPdf ? "PDF" : "Text"} · uploaded {formatDate(form.uploadedAt)}
           </p>
+          {form.template === INTAKE_FORM_VERSION ? (
+            <span
+              className="mt-2 inline-flex items-center gap-1 rounded-full border border-sage/30 bg-status-ready-bg px-2 py-0.5 text-[0.7rem] font-medium text-status-ready-fg"
+              title={`TDC standard intake form (${INTAKE_FORM_VERSION})`}
+            >
+              <BadgeCheck className="size-3" aria-hidden /> Standard form v1
+            </span>
+          ) : (
+            <span className="mt-2 inline-flex items-center gap-1 rounded-full border border-gold-light bg-status-followup-bg px-2 py-0.5 text-[0.7rem] font-medium text-status-followup-fg">
+              <TriangleAlert className="size-3" aria-hidden /> Not the standard form
+            </span>
+          )}
         </div>
       </div>
 

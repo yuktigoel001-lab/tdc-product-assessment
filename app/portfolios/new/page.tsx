@@ -3,7 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Check, ExternalLink, FileText, Loader2, Sparkles, Upload, X } from "lucide-react";
+import { ArrowLeft, Check, ClipboardList, ExternalLink, FileText, Loader2, Sparkles, Upload, X } from "lucide-react";
+import { StandardFormDialog } from "@/components/intake/standard-form-dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { buildPortfolio, newPortfolioId } from "@/lib/build-portfolio";
@@ -160,6 +161,24 @@ export default function NewPortfolioPage() {
 
           <div className="space-y-3">
             <span className="block text-sm font-medium text-ink">Filled intake form</span>
+            <div className="flex gap-2.5 rounded-lg border border-sage/25 bg-status-ready-bg/50 px-3.5 py-2.5 text-sm text-forest">
+              <ClipboardList className="mt-0.5 size-4 shrink-0" aria-hidden />
+              <p>
+                Assumes the client filled TDC&apos;s standard intake form (v1), so every client is asked the same
+                questions.{" "}
+                <StandardFormDialog
+                  trigger={(open) => (
+                    <button
+                      type="button"
+                      onClick={open}
+                      className="cursor-pointer font-medium whitespace-nowrap underline underline-offset-4 hover:text-sage"
+                    >
+                      View the standard form
+                    </button>
+                  )}
+                />
+              </p>
+            </div>
             <div role="tablist" aria-label="Form source" className="flex w-fit rounded-full border border-border p-0.5">
               {(
                 [
@@ -273,8 +292,8 @@ export default function NewPortfolioPage() {
                 )}
                 {demoUpload && (
                   <p className="rounded-lg border border-gold-light bg-status-followup-bg/60 px-3.5 py-2.5 text-sm text-status-followup-fg">
-                    Live AI sorting needs an API key, and this prototype is running in demo mode. Please use a sample
-                    form instead.
+                    This prototype runs on demo data only, so it can&apos;t sort your own file yet. Please use one of the
+                    sample forms instead.
                   </p>
                 )}
               </div>

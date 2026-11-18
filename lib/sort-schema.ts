@@ -21,6 +21,11 @@ export const aiFollowUpSchema = z.object({
 });
 
 export const sortResultSchema = z.object({
+  /** Did the file look like TDC's standard intake form (tdc-intake-v1)? */
+  formCheck: z.object({
+    isStandardForm: z.boolean(),
+    note: z.string().optional(),
+  }),
   summary: z.string().min(1),
   clientDetails: z.object({
     age: z.number().int().positive().nullish(),

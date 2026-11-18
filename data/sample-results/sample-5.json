@@ -1,0 +1,77 @@
+{
+  "formCheck": {
+    "isStandardForm": false,
+    "note": "No form version, section numbers or importance marks were found. This looks like a free-form email."
+  },
+  "summary": "Neha (31, Chennai) wants a kind, ambitious partner who loves travelling, ideally vegetarian and in Chennai or Bangalore. She sent an email rather than the standard form, so nothing is marked by importance and several categories are missing.",
+  "clientDetails": {
+    "age": 31,
+    "city": "Chennai",
+    "profession": "Chartered accountant at a Big Four firm"
+  },
+  "preferences": [
+    {
+      "category": "age_height",
+      "label": "Age 31 to 37",
+      "type": "soft_rule",
+      "sourceQuote": "someone between 31 and 37"
+    },
+    {
+      "category": "location",
+      "label": "Chennai or Bangalore",
+      "type": "soft_rule",
+      "sourceQuote": "ideally in Chennai or Bangalore"
+    },
+    {
+      "category": "lifestyle",
+      "label": "Vegetarian partner preferred",
+      "type": "soft_rule",
+      "sourceQuote": "would prefer a vegetarian partner, though I'm not rigid about it"
+    },
+    {
+      "category": "lifestyle",
+      "label": "Non-smoker",
+      "type": "soft_rule",
+      "sourceQuote": "He must not smoke."
+    },
+    {
+      "category": "family",
+      "label": "Close to her parents",
+      "type": "soft_rule",
+      "sourceQuote": "Family is very important to me and I'm close to my parents."
+    },
+    {
+      "category": "values_personality",
+      "label": "Kind, ambitious, loves travelling",
+      "type": "soft_rule",
+      "sourceQuote": "someone who is kind, ambitious and loves travelling"
+    },
+    {
+      "category": "children",
+      "label": "Wants children someday",
+      "type": "soft_rule",
+      "sourceQuote": "I want children someday."
+    }
+  ],
+  "followUps": [
+    {
+      "question": "Could Neha fill in TDC's standard intake form? Her email skips religion, language, education, marital status and more.",
+      "reason": "This isn't the standard form, so many categories are missing and nothing has an importance mark.",
+      "relatedPreferenceIndexes": []
+    },
+    {
+      "question": "Is a non-smoker a deal-breaker?",
+      "reason": "\"He must not smoke\" sounds firm, but without an importance mark it's a soft rule for now.",
+      "relatedPreferenceIndexes": [
+        3
+      ]
+    },
+    {
+      "question": "Roughly when would you like to have children?",
+      "reason": "\"I want children someday\" doesn't give a timeline to match on.",
+      "relatedPreferenceIndexes": [
+        6
+      ]
+    }
+  ]
+}

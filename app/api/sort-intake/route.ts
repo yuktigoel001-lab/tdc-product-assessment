@@ -48,7 +48,7 @@ export async function POST(request: Request) {
           ok: false,
           code: "demo_mode_upload",
           message:
-            "Live AI sorting needs an API key. This prototype is running in demo mode, so please pick one of the sample forms instead.",
+            "This prototype runs on demo data only, so it can't sort your own file yet. Please pick one of the sample forms instead.",
         },
         400,
       );

@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "check:data": "tsx scripts/check-mock-data.ts",
-    "make:pdfs": "tsx scripts/make-sample-pdfs.ts"
+    "make:pdfs": "tsx scripts/make-sample-pdfs.ts",
+    "build:demo-data": "tsx scripts/build-demo-data.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",

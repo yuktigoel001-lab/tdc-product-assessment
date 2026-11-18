@@ -1,7 +1,11 @@
 /** Turns the AI's sorted result into a new portfolio, ready for the matchmaker to review. */
+import { INTAKE_FORM_VERSION } from "./intake-form";
 import { matchmakerName, type MatchmakerId } from "./matchmakers";
 import type { SortResult } from "./sort-schema";
 import type { FollowUp, LogEntry, OriginalForm, Portfolio, Preference } from "./types";
+
+export const NOT_STANDARD_WARNING =
+  "This doesn't look like TDC's standard intake form. Results may be incomplete.";
 
 function slug(name: string) {
   return (
@@ -63,6 +67,8 @@ export function buildPortfolio(input: {
     },
   ];
 
+  const isStandard = result.formCheck.isStandardForm;
+
   return {
     id,
     clientName: input.clientName.trim(),
@@ -74,7 +80,8 @@ export function buildPortfolio(input: {
     preferences,
     followUps,
     log,
-    form: input.form,
+    form: { ...input.form, ...(isStandard ? { template: INTAKE_FORM_VERSION } : {}) },
+    ...(isStandard ? {} : { formWarning: NOT_STANDARD_WARNING }),
     createdAt: at(0),
     updatedAt: at(2),
   };

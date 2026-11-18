@@ -11,7 +11,8 @@ import { useSyncExternalStore } from "react";
 import { MOCK_PORTFOLIOS } from "@/data/mock-portfolios";
 import type { Portfolio } from "./types";
 
-const STORAGE_KEY = "tdc:portfolios:v1";
+// v2: portfolios built from the standard intake form (older saved data is ignored).
+const STORAGE_KEY = "tdc:portfolios:v2";
 
 let cache: Portfolio[] | null = null;
 const listeners = new Set<() => void>();

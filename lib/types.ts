@@ -53,6 +53,8 @@ export type OriginalForm = {
   url?: string;
   /** Files uploaded in the browser are kept in IndexedDB under this key. */
   blobKey?: string;
+  /** "tdc-intake-v1" when the file is TDC's standard intake form. */
+  template?: string;
 };
 
 export type PortfolioStatus = "new" | "in_review" | "needs_follow_up" | "ready";
@@ -69,6 +71,8 @@ export type Portfolio = {
   followUps: FollowUp[];
   log: LogEntry[];
   form: OriginalForm;
+  /** Set when the uploaded file didn't look like the standard intake form. */
+  formWarning?: string;
   createdAt: string;
   updatedAt: string;
 };

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, TriangleAlert } from "lucide-react";
 import { ClientLog } from "@/components/portfolio/client-log";
 import { FollowUpsPanel, type FollowUpHandlers } from "@/components/portfolio/follow-ups-panel";
 import { OriginalFormCard } from "@/components/portfolio/original-form";
@@ -82,6 +82,18 @@ export function PortfolioView() {
       {backLink}
       <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_22rem]">
         <div className="space-y-6">
+          {portfolio.formWarning && (
+            <div
+              role="alert"
+              className="flex gap-3 rounded-xl border border-gold-light bg-status-followup-bg/70 px-5 py-4 text-sm text-status-followup-fg"
+            >
+              <TriangleAlert className="mt-0.5 size-4 shrink-0" aria-hidden />
+              <p>
+                <strong className="font-semibold">{portfolio.formWarning}</strong> Nothing was marked by importance, so
+                every preference is a soft rule until you check it with the client.
+              </p>
+            </div>
+          )}
           <SummaryCard portfolio={portfolio} />
           <PreferenceSection type="deal_breaker" preferences={portfolio.preferences} handlers={preferenceHandlers} />
           <PreferenceSection type="soft_rule" preferences={portfolio.preferences} handlers={preferenceHandlers} />
