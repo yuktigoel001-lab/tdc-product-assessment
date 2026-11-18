@@ -31,7 +31,7 @@ Status updates on its own: **New** → **In review** → **Needs follow-up** (wh
 
 ![Rohan Mehta's portfolio](docs/screenshots/rohan-portfolio.png)
 
-**New portfolio:** download the blank standard form, then upload the client's filled form (or use the sample filled form).
+**New portfolio:** upload the client's filled standard intake form. Links below the upload area download the blank template and a sample filled form. For the demo, the client name is pre-filled, so one click creates a portfolio from the sample (pre-sorted demo data, no AI).
 
 ![New portfolio screen](docs/screenshots/new-portfolio.png)
 
