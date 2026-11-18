@@ -2,7 +2,7 @@
 
 A prototype for **The Date Crew** Product Growth assessment: a client portfolio dashboard for matchmakers. One filled intake form becomes a structured, standard portfolio in seconds, and the matchmaker stays in control.
 
-**Live demo:** _add your Vercel link here_
+**Live demo:** https://tdc-product-assessment.vercel.app (demo data only; changes are saved in your browser, and "Reset demo data" in the footer starts fresh)
 
 ## The problem
 
