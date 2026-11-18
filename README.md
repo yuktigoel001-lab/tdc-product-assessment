@@ -21,14 +21,13 @@ Every client gets a portfolio with preferences sorted into the same 12 categorie
 
 Status updates on its own: **New** → **In review** → **Needs follow-up** (while questions are open) → **Ready** (everything confirmed, no open questions).
 
-<!-- Screenshot 1: replace this line with ![Dashboard](docs/screenshots/1-dashboard.png) -->
-> **Screenshot placeholder:** the dashboard (`docs/screenshots/1-dashboard.png`)
+**Client portfolios:** Matchmaker A's clients, with a status for each and how many deal-breakers and open follow-ups they have.
 
-<!-- Screenshot 2: replace this line with ![Portfolio](docs/screenshots/2-portfolio.png) -->
-> **Screenshot placeholder:** a portfolio with deal-breakers, soft rules, follow-ups and the client log (`docs/screenshots/2-portfolio.png`)
+![Client portfolios dashboard](docs/screenshots/portfolio.png)
 
-<!-- Screenshot 3: replace this line with ![New portfolio](docs/screenshots/3-new-portfolio.png) -->
-> **Screenshot placeholder:** creating a new portfolio from a sample form (`docs/screenshots/3-new-portfolio.png`)
+**New portfolio:** create a portfolio from the client's filled standard intake form, or try one of the 5 sample forms.
+
+![New portfolio screen](docs/screenshots/new-portfolio.png)
 
 ## Try it in 2 minutes
 
