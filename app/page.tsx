@@ -7,8 +7,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { PortfolioCard } from "@/components/dashboard/portfolio-card";
 import { StatsStrip } from "@/components/dashboard/stats-strip";
-import { useViewingAs } from "@/components/layout/viewing-as";
-import { matchmakerName } from "@/lib/matchmakers";
+import { CURRENT_MATCHMAKER, matchmakerName } from "@/lib/matchmakers";
 import { portfolioStatus, STATUS_LABELS } from "@/lib/status";
 import { usePortfolios } from "@/lib/store";
 import type { PortfolioStatus } from "@/lib/types";
@@ -18,7 +17,6 @@ type Filter = "all" | PortfolioStatus;
 const FILTERS: Filter[] = ["all", "new", "in_review", "needs_follow_up", "ready"];
 
 export default function DashboardPage() {
-  const { viewingAs } = useViewingAs();
   const all = usePortfolios();
   const [filter, setFilter] = useState<Filter>("all");
   const [query, setQuery] = useState("");
@@ -27,9 +25,9 @@ export default function DashboardPage() {
   const mine = useMemo(
     () =>
       all
-        .filter((p) => p.matchmakerId === viewingAs)
+        .filter((p) => p.matchmakerId === CURRENT_MATCHMAKER)
         .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt)),
-    [all, viewingAs],
+    [all],
   );
 
   const counts = useMemo(() => {
@@ -48,9 +46,9 @@ export default function DashboardPage() {
     <div className="space-y-8">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="text-sm text-ink-subtle">{matchmakerName(viewingAs)}</p>
+          <p className="text-sm text-ink-subtle">{matchmakerName(CURRENT_MATCHMAKER)}</p>
           <h1 className="text-4xl text-ink">
-            Client <em className="text-forest">portfolios</em>
+            Your client <em className="text-forest">portfolios</em>
           </h1>
         </div>
         <Link href="/portfolios/new" className={buttonVariants({ size: "lg" })}>
