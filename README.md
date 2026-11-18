@@ -2,7 +2,9 @@
 
 A prototype for **The Date Crew** Product Growth assessment: a client portfolio dashboard for matchmakers. One filled intake form becomes a structured, standard portfolio in seconds, and the matchmaker stays in control.
 
-**Live demo:** https://tdc-product-assessment.vercel.app (demo data only; changes are saved in your browser, and "Reset demo data" in the footer starts fresh)
+**Live demo:** https://tdc-product-assessment.vercel.app (changes are saved in your browser, and "Reset demo data" in the footer starts fresh)
+
+> **Demo only: no AI is used yet.** Every portfolio in the prototype is built from pre-sorted demo data that follows the rules the AI would use. The sections below describe what the AI would do in the full product.
 
 ## The problem
 
@@ -16,7 +18,7 @@ Every client gets a portfolio with preferences sorted into the same 12 categorie
 
 1. The matchmaker downloads TDC's blank standard intake form from the app and sends it to the client, who fills it in. *(Sending and filling in happen outside the app.)*
 2. The matchmaker creates a new portfolio and uploads the filled form (or, for reviewers, uses the sample filled form).
-3. **AI sorts the form:** preferences in standard categories, typed by the client's own importance marks, plus follow-up questions where answers clash or are vague, and a short summary.
+3. **AI sorts the form** *(in this prototype: pre-sorted demo data, no AI)*: preferences in standard categories, typed by the client's own importance marks, plus follow-up questions where answers clash or are vague, and a short summary.
 4. **The matchmaker reviews it:** confirm, edit, or move a preference between deal-breakers and soft rules, and resolve follow-ups. Every action goes into the **client log**, and the original form stays attached.
 
 Status updates on its own: **New** → **In review** → **Needs follow-up** (while questions are open) → **Ready** (everything confirmed, no open questions).
@@ -38,14 +40,14 @@ Status updates on its own: **New** → **In review** → **Needs follow-up** (wh
 Everything starts on **New portfolio**, which follows the real flow: the matchmaker sends the client TDC's standard form, then uploads it once it comes back filled in.
 
 1. **Download the blank template:** under the upload area, click **Download blank template** to get TDC's standard intake form (v1) as a PDF, the form every client fills in.
-2. **Download the sample filled form:** click **Download a sample filled form to test this flow**. It's the standard form, filled in by a sample client, Vikram Sethi.
-3. **Upload it and create the portfolio:** type a client name (e.g. *Vikram Sethi*), drop the downloaded file into the upload area (or click **browse**), then click **Create portfolio and sort with AI**. The app recognises the sample and opens Vikram's portfolio with deal-breakers, soft rules and 4 follow-up questions:
+2. **Create the portfolio in one click:** the client name is pre-filled (*Vikram Sethi*), so just click **Create portfolio and sort with AI**. With no file uploaded, the demo uses the sample filled form: TDC's standard form, filled in by a sample client. To follow the real flow instead, click **Download a sample filled form to test this flow** and upload that file first; the app recognises it either way.
+3. **See the sorted portfolio:** Vikram's portfolio opens with deal-breakers, soft rules and 4 follow-up questions (pre-sorted demo data, no AI):
    - three contradictions: Mumbai only vs moving abroad; age 25 to 28 vs 10+ years' experience; vegetarian vs sushi;
-   - one importance clash: he marked non-smoking as only **Nice to have**, but wrote *"Absolutely no smokers"*. The AI keeps his mark (it stays a soft rule) and asks instead.
+   - one importance clash: he marked non-smoking as only **Nice to have**, but wrote *"Absolutely no smokers"*. His mark is kept (it stays a soft rule) and a follow-up asks instead.
 4. **Resolve a follow-up:** in the side panel, click **Mark resolved** on a question, add a note (e.g. *"A non-smoker is a must"*), then use **Update the related preference** to edit it or move it to deal-breakers. Every step appears in the **client log**.
 5. **Confirm preferences until the status is Ready:** resolve the other follow-ups, then click **Confirm all** on each section (or confirm, edit and move them one by one). The status moves from *Needs follow-up* to *In review* to **Ready**.
 
-Any other file shows a message that live AI sorting needs an API key, since this prototype runs on demo data only. The dashboard also has 4 mock clients to explore (try **Rohan Mehta**, who needs a follow-up). **Reset demo data** in the footer puts everything back.
+Any other file shows a message that this prototype is demo only and can only sort the sample. The dashboard also has 4 mock clients to explore (try **Rohan Mehta**, who needs a follow-up). **Reset demo data** in the footer puts everything back.
 
 ## Assumptions
 
@@ -66,7 +68,7 @@ Any other file shows a message that live AI sorting needs an API key, since this
 
 | Prototype | Production |
 |---|---|
-| **Demo data only.** The sample filled form and the non-standard form are recognised by a fingerprint of their content (SHA-256), however they're uploaded, and return pre-sorted results from [`data/sample-results`](data/sample-results); any other file shows a "live AI sorting needs an API key" message. | **Live AI sorting.** The server route [`app/api/sort-intake/route.ts`](app/api/sort-intake/route.ts) sends the form to Claude (API key kept on the server), with structured output checked against the same schema ([`lib/sort-schema.ts`](lib/sort-schema.ts)) and a retry if it doesn't match. |
+| **Demo data only.** The sample filled form and the non-standard form are recognised by a fingerprint of their content (SHA-256), however they're uploaded, and return pre-sorted results from [`data/sample-results`](data/sample-results); any other file shows a "demo only, no AI is used yet" message. | **Live AI sorting.** The server route [`app/api/sort-intake/route.ts`](app/api/sort-intake/route.ts) sends the form to Claude (API key kept on the server), with structured output checked against the same schema ([`lib/sort-schema.ts`](lib/sort-schema.ts)) and a retry if it doesn't match. |
 | Data saved in the browser (`localStorage`, plus IndexedDB for files), through one module: [`lib/store.ts`](lib/store.ts). | A **Supabase** database and file storage. Only `lib/store.ts` and `lib/form-files.ts` would change; the screens stay the same. |
 | No logins; the app is Matchmaker A's dashboard. | **Logins** for matchmakers, with each one seeing their own clients (and team leads seeing everyone). |
 | The matchmaker uploads the filled form by hand. | **Email intake:** the standard form is sent to the client as a link, and answers arrive in the portfolio automatically. |

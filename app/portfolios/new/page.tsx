@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Check, ClipboardList, Download, FileText, Loader2, Sparkles, Upload, X } from "lucide-react";
+import { ArrowLeft, Check, ClipboardList, Download, FileText, Info, Loader2, Sparkles, Upload, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { buildPortfolio, newPortfolioId } from "@/lib/build-portfolio";
@@ -19,13 +19,14 @@ type Stage = "idle" | "reading" | "sorting" | "saving";
 
 const STAGES: { key: Exclude<Stage, "idle">; label: string }[] = [
   { key: "reading", label: "Reading the form…" },
-  { key: "sorting", label: "Sorting preferences…" },
+  { key: "sorting", label: "Sorting preferences (demo data)…" },
   { key: "saving", label: "Building the portfolio…" },
 ];
 
 export default function NewPortfolioPage() {
   const router = useRouter();
-  const [clientName, setClientName] = useState("");
+  // Pre-filled with the sample client so the demo works in one click (editable).
+  const [clientName, setClientName] = useState<string>(STANDARD_SAMPLE.clientName);
   const [file, setFile] = useState<File | null>(null);
   const [dragging, setDragging] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -38,7 +39,13 @@ export default function NewPortfolioPage() {
   }, []);
 
   const busy = stage !== "idle";
-  const canSubmit = !busy && clientName.trim().length > 0 && Boolean(file);
+
+  /** The sample filled form, fetched exactly as the download link would save it. */
+  async function sampleFile() {
+    const res = await fetch(sampleUrl(STANDARD_SAMPLE.fileName));
+    if (!res.ok) throw new Error("Couldn't load the sample form. Please try again.");
+    return new File([await res.blob()], STANDARD_SAMPLE.fileName, { type: STANDARD_SAMPLE.mimeType });
+  }
 
   function pickFile(f: File | undefined) {
     if (!f) return;
@@ -55,15 +62,22 @@ export default function NewPortfolioPage() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!canSubmit || !file) return;
+    if (busy) return;
+    if (!clientName.trim()) {
+      setError("Please enter the client's name.");
+      return;
+    }
     setError(null);
     setStage("reading");
 
     try {
-      // 1. Send the file to the server for sorting.
+      // No file uploaded? Demo with the sample filled form.
+      const formFile = file ?? (await sampleFile());
+
+      // 1. Send the file to the server (demo: it returns a pre-sorted result, no AI is used).
       stageTimer.current = setTimeout(() => setStage("sorting"), 700);
       const body = new FormData();
-      body.append("file", file);
+      body.append("file", formFile);
       const res = await fetch("/api/sort-intake", { method: "POST", body });
       const data = (await res.json().catch(() => null)) as SortResponse | null;
       if (stageTimer.current) clearTimeout(stageTimer.current);
@@ -74,7 +88,7 @@ export default function NewPortfolioPage() {
       setStage("saving");
       const id = newPortfolioId(clientName);
       const blobKey = `form:${id}`;
-      await saveFormFile(blobKey, file);
+      await saveFormFile(blobKey, formFile);
       addPortfolio(
         buildPortfolio({
           id,
@@ -82,9 +96,9 @@ export default function NewPortfolioPage() {
           matchmakerId: CURRENT_MATCHMAKER,
           result: data.result,
           form: {
-            fileName: file.name,
+            fileName: formFile.name,
             uploadedAt: new Date().toISOString(),
-            mimeType: intakeKind(file) === "pdf" ? "application/pdf" : "text/plain",
+            mimeType: intakeKind(formFile) === "pdf" ? "application/pdf" : "text/plain",
             blobKey,
           },
           mode: data.mode,
@@ -109,8 +123,9 @@ export default function NewPortfolioPage() {
           New <em className="text-forest">portfolio</em>
         </h1>
         <p className="mt-2 text-ink-muted">
-          Send the client TDC&apos;s standard intake form, then upload it here once they&apos;ve filled it in. AI sorts it
-          into deal-breakers, soft rules and follow-up questions in seconds. You review everything before it&apos;s used.
+          Send the client TDC&apos;s standard intake form, then upload it here once they&apos;ve filled it in. In the full
+          product, AI sorts it into deal-breakers, soft rules and follow-up questions in seconds, and you review
+          everything before it&apos;s used.
         </p>
       </div>
 
@@ -122,8 +137,7 @@ export default function NewPortfolioPage() {
               <Input
                 value={clientName}
                 onChange={(e) => setClientName(e.target.value)}
-                placeholder="e.g. Vikram Sethi"
-                required
+                placeholder="Client's full name"
                 className="h-10 bg-white"
               />
             </label>
@@ -219,11 +233,22 @@ export default function NewPortfolioPage() {
           )}
 
           <div className="flex flex-wrap items-center gap-3 border-t border-border pt-5">
-            <Button type="submit" size="lg" disabled={!canSubmit}>
+            <Button type="submit" size="lg" disabled={busy}>
               <Sparkles /> Create portfolio and sort with AI
             </Button>
-            <span className="text-xs text-ink-subtle">Nothing is shared with the client.</span>
+            {!file && (
+              <span className="text-xs text-ink-subtle">
+                No file uploaded: the demo uses the sample filled form ({STANDARD_SAMPLE.clientName}).
+              </span>
+            )}
           </div>
+          <p className="flex gap-2 rounded-lg border border-gold-light bg-status-followup-bg/60 px-3.5 py-2.5 text-xs text-status-followup-fg">
+            <Info className="mt-px size-3.5 shrink-0" aria-hidden />
+            <span>
+              <strong className="font-semibold">Demo only: no AI is used yet.</strong> The sample filled form returns a
+              pre-sorted result, so you can see the full flow. Other files can&apos;t be sorted in this prototype.
+            </span>
+          </p>
         </fieldset>
 
         {busy && <LoadingOverlay stage={stage} />}
