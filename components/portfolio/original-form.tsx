@@ -94,14 +94,14 @@ export function OriginalFormCard({ form }: { form: OriginalForm }) {
       </div>
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="max-h-[85vh] gap-0 p-0 sm:max-w-2xl">
+        <DialogContent className="max-h-[85vh] grid-rows-[auto_minmax(0,1fr)] gap-0 overflow-hidden p-0 sm:max-w-2xl">
           <DialogHeader className="border-b border-border px-6 py-4">
             <DialogTitle className="font-serif text-xl font-normal">Original intake form</DialogTitle>
             <DialogDescription>
               {form.fileName} · uploaded {formatDate(form.uploadedAt)}
             </DialogDescription>
           </DialogHeader>
-          <div className="overflow-y-auto bg-cream-light px-6 py-5">
+          <div className="min-h-0 overflow-y-auto overscroll-contain bg-cream-light px-6 py-5">
             {error ? (
               <p className="text-sm text-destructive">
                 Sorry, the form couldn&apos;t be loaded. Uploaded forms are kept only in the browser they were added

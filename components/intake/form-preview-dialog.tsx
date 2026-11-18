@@ -3,14 +3,17 @@
 import { useState, type ReactNode } from "react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
-/** Read-only view of a filled text form (same look as "View form" on a portfolio). */
+/**
+ * Read-only view of a filled text form (same look as "View form" on a portfolio).
+ * `load` returns the form's text: from a URL, a picked file, or browser storage.
+ */
 export function FormPreviewDialog({
-  url,
+  load,
   fileName,
   title = "Filled intake form",
   trigger,
 }: {
-  url: string;
+  load: () => Promise<string>;
   fileName: string;
   title?: string;
   trigger: (open: () => void) => ReactNode;
@@ -21,11 +24,9 @@ export function FormPreviewDialog({
 
   async function show() {
     setOpen(true);
-    if (text !== null) return;
+    setError(false);
     try {
-      const res = await fetch(url);
-      if (!res.ok) throw new Error(String(res.status));
-      setText(await res.text());
+      setText(await load());
     } catch {
       setError(true);
     }
@@ -35,12 +36,12 @@ export function FormPreviewDialog({
     <>
       {trigger(show)}
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="max-h-[85vh] gap-0 p-0 sm:max-w-2xl">
+        <DialogContent className="max-h-[85vh] grid-rows-[auto_minmax(0,1fr)] gap-0 overflow-hidden p-0 sm:max-w-2xl">
           <DialogHeader className="border-b border-border px-6 py-4">
             <DialogTitle className="font-serif text-xl font-normal">{title}</DialogTitle>
             <DialogDescription>{fileName}</DialogDescription>
           </DialogHeader>
-          <div className="overflow-y-auto bg-cream-light px-6 py-5">
+          <div className="min-h-0 overflow-y-auto overscroll-contain bg-cream-light px-6 py-5">
             {error ? (
               <p className="text-sm text-destructive">Sorry, the form couldn&apos;t be loaded.</p>
             ) : text === null ? (
@@ -54,3 +55,10 @@ export function FormPreviewDialog({
     </>
   );
 }
+
+/** Loads a form's text from a URL on this site. */
+export const loadFromUrl = (url: string) => async () => {
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(String(res.status));
+  return res.text();
+};

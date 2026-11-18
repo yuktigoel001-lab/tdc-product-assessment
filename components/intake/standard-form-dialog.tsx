@@ -18,7 +18,7 @@ export function StandardFormDialog({ trigger }: { trigger: (open: () => void) =>
     <>
       {trigger(() => setOpen(true))}
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="max-h-[88vh] gap-0 p-0 sm:max-w-3xl">
+        <DialogContent className="max-h-[88vh] grid-rows-[auto_minmax(0,1fr)] gap-0 overflow-hidden p-0 sm:max-w-3xl">
           <DialogHeader className="border-b border-border px-6 py-4">
             <DialogTitle className="font-serif text-2xl font-normal">
               {INTAKE_FORM_NAME} <span className="font-sans text-sm text-ink-subtle">({INTAKE_FORM_VERSION})</span>
@@ -28,7 +28,7 @@ export function StandardFormDialog({ trigger }: { trigger: (open: () => void) =>
             </DialogDescription>
           </DialogHeader>
 
-          <div className="space-y-6 overflow-y-auto px-6 py-5">
+          <div className="min-h-0 space-y-6 overflow-y-auto overscroll-contain px-6 py-5">
             <section className="rounded-lg bg-cream-light p-4">
               <h3 className="font-sans text-sm font-semibold text-ink">Importance scale</h3>
               <p className="mt-1 text-sm text-ink-muted">

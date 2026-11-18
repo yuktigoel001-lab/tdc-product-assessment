@@ -2,6 +2,7 @@
  * Generates all demo files from data/intakes.ts, so every form follows the standard template:
  *  - public/mock-forms/<client>.txt          the 8 mock clients' filled forms
  *  - public/sample-forms/*.txt               the standard sample form and the non-standard file
+ *  - public/forms/tdc-standard-intake-form-v1.pdf   the BLANK standard form (downloadable template)
  *  - data/sample-results/sample-N.json       demo-mode results (the "AI output")
  * Run with: npm run build:demo-data
  */
@@ -12,6 +13,7 @@ import { buildDemoSortResult } from "../lib/demo-sorting";
 import { renderIntakeText } from "../lib/intake-form";
 import { SAMPLE_FORMS } from "../lib/samples";
 import { sortResultSchema } from "../lib/sort-schema";
+import { makeBlankFormPdf } from "./make-blank-form-pdf";
 
 const root = process.cwd();
 const formText = (c: ClientIntake) => (c.intake ? renderIntakeText(c.intake) : c.rawText!);
@@ -32,3 +34,5 @@ for (const sample of SAMPLE_FORMS) {
   writeFileSync(join(root, "data", "sample-results", `${sample.id}.json`), JSON.stringify(result, null, 2) + "\n");
   console.log(`✓ ${sample.id}: form + result (${result.preferences.length} preferences, ${result.followUps.length} follow-ups)`);
 }
+
+makeBlankFormPdf().then((path) => console.log(`✓ ${path}`));

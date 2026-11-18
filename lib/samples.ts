@@ -33,3 +33,9 @@ export function sampleUrl(fileName: string) {
 export function findSample(id: string) {
   return SAMPLE_FORMS.find((s) => s.id === id);
 }
+
+/** The blank standard form, generated from lib/intake-form.ts by npm run build:demo-data. */
+export const BLANK_FORM = {
+  fileName: "tdc-standard-intake-form-v1.pdf",
+  url: "/forms/tdc-standard-intake-form-v1.pdf",
+} as const;
