@@ -1,0 +1,31 @@
+{
+  "summary": "Aditi wants a calm, kind and curious partner in Pune (Mumbai works too) who she can talk to about anything. Vegetarian and non-smoking are firm, and she values honesty above all. Children within about 3 years of marriage.",
+  "clientDetails": { "age": 30, "city": "Pune", "profession": "Data scientist at a healthcare company" },
+  "preferences": [
+    { "category": "age_height", "label": "Age 30 to 36", "type": "soft_rule", "sourceQuote": "Age range: 30 to 36" },
+    { "category": "age_height", "label": "5'7\" or taller", "type": "soft_rule", "sourceQuote": "5'7\" or taller" },
+    { "category": "marital_status", "label": "Never married", "type": "soft_rule", "sourceQuote": "Marital status: Never married" },
+    { "category": "location", "label": "Pune preferred, Mumbai is fine", "type": "soft_rule", "sourceQuote": "Pune or Mumbai. I'd prefer to stay in Pune, but Mumbai is fine." },
+    { "category": "religion_community", "label": "Hindu, any community", "type": "soft_rule", "sourceQuote": "Hindu. Community is not important." },
+    { "category": "language", "label": "Fluent in English", "type": "deal_breaker", "sourceQuote": "Must speak English fluently." },
+    { "category": "language", "label": "Marathi would be a bonus", "type": "soft_rule", "sourceQuote": "Marathi would be a bonus." },
+    { "category": "education", "label": "Postgraduate, ideally engineering, science or medicine", "type": "soft_rule", "sourceQuote": "Postgraduate degree. Engineering, science or medicine would be ideal." },
+    { "category": "profession_income", "label": "Working professional who enjoys their job", "type": "soft_rule", "sourceQuote": "Working professional who enjoys their job." },
+    { "category": "lifestyle", "label": "Vegetarian partner only", "detail": "Eggs are fine.", "type": "deal_breaker", "sourceQuote": "I am vegetarian and only want a vegetarian partner. Eggs are fine." },
+    { "category": "lifestyle", "label": "Non-smoker only", "type": "deal_breaker", "sourceQuote": "Non-smoker only. This is non-negotiable." },
+    { "category": "lifestyle", "label": "Occasional social drinking is okay", "type": "soft_rule", "sourceQuote": "Occasional social drinking is okay." },
+    { "category": "lifestyle", "label": "Looks after their health", "type": "soft_rule", "sourceQuote": "Would prefer someone who looks after their health." },
+    { "category": "lifestyle", "label": "No non-vegetarian food at home", "type": "deal_breaker", "sourceQuote": "non-vegetarian food at home" },
+    { "category": "family", "label": "Live on their own, close to both families", "type": "soft_rule", "sourceQuote": "I'd like to live on our own but close to both families." },
+    { "category": "children", "label": "One or two children within 3 years of marriage", "type": "soft_rule", "sourceQuote": "I want one or two children, ideally within 3 years of marriage." },
+    { "category": "values_personality", "label": "Calm, kind and curious", "type": "soft_rule", "sourceQuote": "Calm, kind and curious." },
+    { "category": "values_personality", "label": "Not rude or short-tempered", "type": "deal_breaker", "sourceQuote": "anyone who is rude or short-tempered" }
+  ],
+  "followUps": [
+    {
+      "question": "You said eggs are fine, but no non-vegetarian food at home. Is cooking eggs at home okay?",
+      "reason": "\"Eggs are fine\" and \"no non-vegetarian food at home\" could clash, depending on whether she counts eggs as non-vegetarian.",
+      "relatedPreferenceIndexes": [9, 13]
+    }
+  ]
+}

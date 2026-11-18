@@ -1,7 +1,9 @@
 "use client";
 
+import { clearFormFiles } from "@/lib/form-files";
+
 /** Removes everything the prototype saved in this browser, then reloads with the original mock data. */
-function resetDemoData() {
+async function resetDemoData() {
   if (!window.confirm("Reset demo data? This removes new portfolios and all edits made in this browser.")) return;
   try {
     Object.keys(window.localStorage)
@@ -10,6 +12,7 @@ function resetDemoData() {
   } catch {
     // Storage blocked: nothing to reset.
   }
+  await clearFormFiles(); // uploaded intake forms
   // Full reload (not client-side navigation) so nothing stale stays in memory.
   window.location.replace(`${window.location.origin}/`);
 }

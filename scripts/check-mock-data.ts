@@ -8,6 +8,8 @@ import { join } from "node:path";
 import { MOCK_PORTFOLIOS } from "../data/mock-portfolios";
 import { CATEGORY_KEYS } from "../lib/categories";
 import { portfolioStatus } from "../lib/status";
+import { SAMPLE_FORMS } from "../lib/samples";
+import { sortResultSchema } from "../lib/sort-schema";
 
 let problems = 0;
 for (const p of MOCK_PORTFOLIOS) {
@@ -37,5 +39,38 @@ for (const p of MOCK_PORTFOLIOS) {
   }
   console.log(`  ${p.clientName.padEnd(16)} matchmaker ${p.matchmakerId}  ${portfolioStatus(p).padEnd(16)} ${p.preferences.length} prefs, ${p.followUps.length} follow-ups`);
 }
+// ---------- pre-sorted sample results (demo mode) ----------
+console.log("");
+for (const sample of SAMPLE_FORMS) {
+  const sourcePath = sample.fileName.endsWith(".pdf")
+    ? join(process.cwd(), "scripts", "pdf-sources", sample.fileName.replace(/\.pdf$/, ".txt"))
+    : join(process.cwd(), "public", "sample-forms", sample.fileName);
+  const form = readFileSync(sourcePath, "utf8");
+  const raw = JSON.parse(readFileSync(join(process.cwd(), "data", "sample-results", `${sample.id}.json`), "utf8"));
+  const parsed = sortResultSchema.safeParse(raw);
+  if (!parsed.success) {
+    problems++;
+    console.log(`✗ ${sample.id}: doesn't match the AI answer format → ${parsed.error.message}`);
+    continue;
+  }
+  const r = parsed.data;
+  r.preferences.forEach((pref, i) => {
+    if (!form.includes(pref.sourceQuote)) {
+      problems++;
+      console.log(`✗ ${sample.id} preference ${i}: quote not found in form → "${pref.sourceQuote}"`);
+    }
+  });
+  r.followUps.forEach((f, i) =>
+    f.relatedPreferenceIndexes.forEach((idx) => {
+      if (idx >= r.preferences.length) {
+        problems++;
+        console.log(`✗ ${sample.id} follow-up ${i}: points at missing preference #${idx}`);
+      }
+    }),
+  );
+  const db = r.preferences.filter((p) => p.type === "deal_breaker").length;
+  console.log(`  ${sample.title.padEnd(42)} ${r.preferences.length} prefs (${db} deal-breakers), ${r.followUps.length} follow-ups`);
+}
+
 console.log(problems === 0 ? "\n✓ All mock data checks passed" : `\n✗ ${problems} problem(s)`);
 process.exit(problems === 0 ? 0 : 1);

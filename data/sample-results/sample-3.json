@@ -1,0 +1,55 @@
+{
+  "summary": "Riya is looking for a mature, caring partner with a good sense of humour who is \"modern but rooted\" and serious about marriage. Almost every answer is open to interpretation (settled, decent height, good family, not too religious), so a short call is needed before shortlisting.",
+  "clientDetails": { "age": 29, "city": "Gurgaon", "profession": "HR business partner at a consulting firm" },
+  "preferences": [
+    { "category": "age_height", "label": "Around her age or a little older", "type": "soft_rule", "sourceQuote": "Around my age or a little older" },
+    { "category": "age_height", "label": "Decent height", "type": "soft_rule", "sourceQuote": "Decent height" },
+    { "category": "marital_status", "label": "Never married", "type": "soft_rule", "sourceQuote": "Marital status: Never married" },
+    { "category": "location", "label": "Delhi NCR ideally", "type": "soft_rule", "sourceQuote": "Delhi NCR ideally, but depends on the person" },
+    { "category": "religion_community", "label": "Not too religious, respects traditions", "type": "soft_rule", "sourceQuote": "Not too religious, but should respect traditions" },
+    { "category": "language", "label": "Hindi and English", "type": "soft_rule", "sourceQuote": "Languages: Hindi, English" },
+    { "category": "education", "label": "Well educated, from a good college", "type": "soft_rule", "sourceQuote": "Well-educated, from a good college" },
+    { "category": "profession_income", "label": "Settled, with a good job and earnings", "type": "soft_rule", "sourceQuote": "Should be settled. Good job, good earnings." },
+    { "category": "lifestyle", "label": "Flexible on diet", "type": "soft_rule", "sourceQuote": "Diet: Flexible" },
+    { "category": "lifestyle", "label": "Ideally a non-smoker", "type": "soft_rule", "sourceQuote": "Not a smoker, ideally" },
+    { "category": "lifestyle", "label": "Occasional drinking is okay", "type": "soft_rule", "sourceQuote": "Occasionally is okay I guess" },
+    { "category": "lifestyle", "label": "Takes care of his health", "type": "soft_rule", "sourceQuote": "Should take care of himself" },
+    { "category": "family", "label": "Good family background", "type": "soft_rule", "sourceQuote": "Good family background. Decent, well-mannered people with good values." },
+    { "category": "children", "label": "Wants children eventually", "type": "soft_rule", "sourceQuote": "Children: Yes, eventually" },
+    { "category": "values_personality", "label": "Mature, caring, good sense of humour", "type": "soft_rule", "sourceQuote": "Someone mature and caring, with a good sense of humour." },
+    { "category": "values_personality", "label": "Modern but rooted", "type": "soft_rule", "sourceQuote": "He should be modern but also rooted." },
+    { "category": "values_personality", "label": "Serious about marriage", "type": "deal_breaker", "sourceQuote": "Someone who is not serious about marriage." }
+  ],
+  "followUps": [
+    {
+      "question": "What age range would you be happy with? For example, 29 to 33?",
+      "reason": "\"Around my age or a little older\" doesn't give a range to filter profiles on.",
+      "relatedPreferenceIndexes": [0]
+    },
+    {
+      "question": "What does \"decent height\" mean to you, roughly in feet and inches?",
+      "reason": "\"Decent height\" is too vague to act on.",
+      "relatedPreferenceIndexes": [1]
+    },
+    {
+      "question": "What does \"settled\" mean for you: a stable job, a certain income, owning a home, or something else?",
+      "reason": "\"Should be settled. Good job, good earnings\" means different things to different people.",
+      "relatedPreferenceIndexes": [7]
+    },
+    {
+      "question": "When you say \"good family background\", what matters most: education, values, how they treat people, or financial standing?",
+      "reason": "\"Good family background\" is too vague to use when picking profiles.",
+      "relatedPreferenceIndexes": [12]
+    },
+    {
+      "question": "How would you describe \"not too religious\"? For example, festivals and family rituals are fine, but no daily puja?",
+      "reason": "\"Not too religious, but should respect traditions\" can mean very different things to different families.",
+      "relatedPreferenceIndexes": [4]
+    },
+    {
+      "question": "Would you rule out a smoker, or is it just a preference?",
+      "reason": "\"Not a smoker, ideally\" is unclear: smoking is often a deal-breaker for matches, so it's worth confirming.",
+      "relatedPreferenceIndexes": [9]
+    }
+  ]
+}

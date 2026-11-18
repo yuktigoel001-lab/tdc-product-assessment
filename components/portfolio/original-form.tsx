@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { ExternalLink, FileText } from "lucide-react";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { SideCard } from "./side-card";
 import { formatDate } from "@/lib/format";
@@ -15,13 +15,45 @@ export function OriginalFormCard({ form }: { form: OriginalForm }) {
   const [error, setError] = useState(false);
   const isPdf = form.mimeType === "application/pdf";
 
-  async function openText() {
-    setOpen(true);
-    if (text !== null || !form.url) return;
-    try {
+  const available = Boolean(form.url || form.blobKey);
+
+  /** Loads the form from the site (sample/mock forms) or from browser storage (uploads). */
+  async function loadBlob(): Promise<Blob> {
+    if (form.url) {
       const res = await fetch(form.url);
       if (!res.ok) throw new Error(String(res.status));
-      setText(await res.text());
+      return res.blob();
+    }
+    const { getFormFile } = await import("@/lib/form-files");
+    const blob = form.blobKey ? await getFormFile(form.blobKey) : undefined;
+    if (!blob) throw new Error("missing");
+    return blob;
+  }
+
+  async function openForm() {
+    if (isPdf) {
+      if (form.url) {
+        window.open(form.url, "_blank", "noopener,noreferrer");
+        return;
+      }
+      // Open the tab straight away (so pop-up blockers allow it), then load the stored PDF into it.
+      const tab = window.open("", "_blank");
+      try {
+        const blob = await loadBlob();
+        const objectUrl = URL.createObjectURL(new Blob([blob], { type: "application/pdf" }));
+        if (tab) tab.location.href = objectUrl;
+        else window.location.href = objectUrl;
+      } catch {
+        tab?.close();
+        setError(true);
+        setOpen(true);
+      }
+      return;
+    }
+    setOpen(true);
+    if (text !== null) return;
+    try {
+      setText(await (await loadBlob()).text());
     } catch {
       setError(true);
     }
@@ -42,20 +74,10 @@ export function OriginalFormCard({ form }: { form: OriginalForm }) {
       </div>
 
       <div className="mt-4">
-        {isPdf && form.url ? (
-          <a
-            href={form.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={buttonVariants({ variant: "outline", size: "sm" })}
-          >
-            View form <ExternalLink />
-          </a>
-        ) : (
-          <Button variant="outline" size="sm" onClick={openText} disabled={!form.url}>
-            View form
-          </Button>
-        )}
+        <Button variant="outline" size="sm" onClick={openForm} disabled={!available}>
+          View form {isPdf && <ExternalLink />}
+        </Button>
+        {!available && <p className="mt-2 text-xs text-ink-subtle">The original file isn&apos;t stored in this browser.</p>}
       </div>
 
       <Dialog open={open} onOpenChange={setOpen}>
@@ -68,7 +90,10 @@ export function OriginalFormCard({ form }: { form: OriginalForm }) {
           </DialogHeader>
           <div className="overflow-y-auto bg-cream-light px-6 py-5">
             {error ? (
-              <p className="text-sm text-destructive">Sorry, the form couldn&apos;t be loaded.</p>
+              <p className="text-sm text-destructive">
+                Sorry, the form couldn&apos;t be loaded. Uploaded forms are kept only in the browser they were added
+                from.
+              </p>
             ) : text === null ? (
               <p className="text-sm text-ink-subtle">Loading the form…</p>
             ) : (

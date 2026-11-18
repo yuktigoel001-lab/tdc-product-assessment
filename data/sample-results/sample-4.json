@@ -1,0 +1,34 @@
+{
+  "summary": "Karan wants a warm, adventurous, outdoorsy partner who is active and wants children within 2 years of marriage. No smoking (even socially), no drugs and no cats are firm. He didn't say where his partner should live.",
+  "clientDetails": { "age": 35, "city": "Hyderabad", "profession": "Product manager at a gaming company" },
+  "preferences": [
+    { "category": "age_height", "label": "Age 28 to 34", "type": "soft_rule", "sourceQuote": "Age range: 28 to 34" },
+    { "category": "marital_status", "label": "Never married, or divorced without children", "type": "soft_rule", "sourceQuote": "Never married, or divorced without children" },
+    { "category": "religion_community", "label": "Any religion", "type": "soft_rule", "sourceQuote": "Religion / community: Any religion" },
+    { "category": "language", "label": "English and Hindi", "type": "soft_rule", "sourceQuote": "Languages: English and Hindi" },
+    { "category": "education", "label": "Graduate or above", "type": "soft_rule", "sourceQuote": "Graduate or above" },
+    { "category": "profession_income", "label": "Working or planning to work, an equal partnership", "type": "soft_rule", "sourceQuote": "Working or planning to work. I'd like an equal partnership." },
+    { "category": "lifestyle", "label": "No smoking at all, not even socially", "detail": "His father had lung cancer.", "type": "deal_breaker", "sourceQuote": "No smoking at all, not even socially." },
+    { "category": "lifestyle", "label": "Occasional drinking fine, no heavy drinking", "type": "soft_rule", "sourceQuote": "Occasional drinking is fine. Heavy drinking is not." },
+    { "category": "lifestyle", "label": "Active: he runs, cycles and treks", "type": "deal_breaker", "sourceQuote": "Must be active. I run, cycle and trek." },
+    { "category": "lifestyle", "label": "No recreational drugs", "type": "deal_breaker", "sourceQuote": "No recreational drugs, ever." },
+    { "category": "lifestyle", "label": "Non-vegetarian is fine", "type": "soft_rule", "sourceQuote": "Diet: Non-vegetarian is fine." },
+    { "category": "family", "label": "His mother may move in later", "type": "soft_rule", "sourceQuote": "My mother lives in Delhi with my sister. She may move in with us later." },
+    { "category": "children", "label": "Wants children within 2 years of marriage", "type": "deal_breaker", "sourceQuote": "She must want children within 2 years of marriage." },
+    { "category": "values_personality", "label": "Warm, adventurous and outdoorsy", "type": "soft_rule", "sourceQuote": "Warm, adventurous and outdoorsy." },
+    { "category": "values_personality", "label": "Good with kids and patient", "type": "soft_rule", "sourceQuote": "Good with kids and patient." },
+    { "category": "other", "label": "No cats (he's allergic)", "type": "deal_breaker", "sourceQuote": "I'm allergic to cats, so a partner with cats won't work." }
+  ],
+  "followUps": [
+    {
+      "question": "Where should your partner live? Hyderabad only, or are you open to other cities or moving yourself?",
+      "reason": "Location was left blank, and it's one of the key things matchmakers filter on.",
+      "relatedPreferenceIndexes": []
+    },
+    {
+      "question": "Your mother may move in later. Should your partner be comfortable with that from the start?",
+      "reason": "\"She may move in with us later\" could be a deal-breaker for some matches, so it's worth knowing how firm it is.",
+      "relatedPreferenceIndexes": [11]
+    }
+  ]
+}

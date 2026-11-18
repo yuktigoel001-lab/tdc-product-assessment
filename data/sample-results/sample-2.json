@@ -1,0 +1,41 @@
+{
+  "summary": "Vikram wants a confident, independent, well-travelled partner who is happy living with his parents in a vegetarian home. Several answers pull in different directions (Mumbai only vs moving abroad, a young age range vs 10+ years' experience), so they need clearing up before shortlisting.",
+  "clientDetails": { "age": 34, "city": "Mumbai", "profession": "Chartered accountant, partner at an audit firm" },
+  "preferences": [
+    { "category": "age_height", "label": "Age 25 to 28", "type": "soft_rule", "sourceQuote": "Age range: 25 to 28" },
+    { "category": "age_height", "label": "Height 5'2\" to 5'7\"", "type": "soft_rule", "sourceQuote": "Height: 5'2\" to 5'7\"" },
+    { "category": "marital_status", "label": "Never married only", "type": "deal_breaker", "sourceQuote": "Never married only" },
+    { "category": "location", "label": "Lives in Mumbai", "type": "deal_breaker", "sourceQuote": "Partner must live in Mumbai. My practice is here and I'm not moving." },
+    { "category": "location", "label": "Open to moving abroad for the right person", "detail": "Would like to live in London for a few years.", "type": "soft_rule", "sourceQuote": "I'm also open to moving abroad for the right person" },
+    { "category": "religion_community", "label": "Hindu, Punjabi preferred", "type": "soft_rule", "sourceQuote": "Hindu, Punjabi preferred" },
+    { "category": "language", "label": "Hindi and English", "type": "soft_rule", "sourceQuote": "Languages: Hindi and English" },
+    { "category": "education", "label": "CA, MBA or law degree", "type": "soft_rule", "sourceQuote": "CA, MBA or a law degree" },
+    { "category": "profession_income", "label": "Well established, 10+ years of work experience", "type": "soft_rule", "sourceQuote": "I want someone well established in her career, ideally with 10+ years of work experience." },
+    { "category": "lifestyle", "label": "Strictly vegetarian household", "type": "deal_breaker", "sourceQuote": "We are a strictly vegetarian household." },
+    { "category": "lifestyle", "label": "No smoking at all", "type": "deal_breaker", "sourceQuote": "No smoking at all." },
+    { "category": "lifestyle", "label": "Social drinking is fine", "type": "soft_rule", "sourceQuote": "Socially is fine." },
+    { "category": "lifestyle", "label": "Someone fit", "type": "soft_rule", "sourceQuote": "Would like someone fit." },
+    { "category": "family", "label": "Comfortable living with his parents", "type": "deal_breaker", "sourceQuote": "My parents will live with us after marriage. That is non-negotiable for me." },
+    { "category": "family", "label": "Gets along with his parents", "type": "deal_breaker", "sourceQuote": "anyone who doesn't get along with my parents" },
+    { "category": "children", "label": "Two children, no rush", "type": "soft_rule", "sourceQuote": "Two kids, but no rush." },
+    { "category": "values_personality", "label": "Confident, independent, well-travelled", "type": "soft_rule", "sourceQuote": "Someone confident and independent who has seen the world." },
+    { "category": "other", "label": "Loves food and travel, tries everything", "type": "soft_rule", "sourceQuote": "I'd love a partner who'll try sushi and street food with me anywhere we go." }
+  ],
+  "followUps": [
+    {
+      "question": "Is living in Mumbai a must, or would you genuinely move abroad for the right person?",
+      "reason": "\"Partner must live in Mumbai. I'm not moving\" clashes with \"open to moving abroad for the right person\".",
+      "relatedPreferenceIndexes": [3, 4]
+    },
+    {
+      "question": "Someone aged 25 to 28 rarely has 10+ years of work experience. Which matters more: the age range or how established she is?",
+      "reason": "The age range (25 to 28) and \"10+ years of work experience\" can't both be true for most people.",
+      "relatedPreferenceIndexes": [0, 8]
+    },
+    {
+      "question": "Does \"strictly vegetarian household\" apply only at home? Sushi and street food often include meat or fish.",
+      "reason": "\"Strictly vegetarian household\" may clash with wanting a partner who tries sushi and street food everywhere.",
+      "relatedPreferenceIndexes": [9, 17]
+    }
+  ]
+}
