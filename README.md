@@ -25,6 +25,10 @@ Status updates on its own: **New** → **In review** → **Needs follow-up** (wh
 
 ![Client portfolios dashboard](docs/screenshots/portfolio.png)
 
+**A client's portfolio:** deal-breakers and soft rules in standard categories, each quoting the client's own words and importance mark, with follow-up questions and the client log alongside. Here, one follow-up is resolved and its related preferences are one click away.
+
+![Rohan Mehta's portfolio](docs/screenshots/rohan-portfolio.png)
+
 **New portfolio:** create a portfolio from the client's filled standard intake form, or try one of the 5 sample forms.
 
 ![New portfolio screen](docs/screenshots/new-portfolio.png)
