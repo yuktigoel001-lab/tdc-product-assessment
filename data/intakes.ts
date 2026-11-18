@@ -389,54 +389,16 @@ export const MOCK_INTAKES = {
 export type MockClientId = keyof typeof MOCK_INTAKES;
 
 // =====================================================================
-// Sample forms (anyone can try these from "New portfolio")
+// Sample files used on the New portfolio page
 // =====================================================================
 
 export const SAMPLE_INTAKES = {
-  /** 1. Clean case: clear answers and obvious deal-breakers. */
-  "sample-1": {
-    clientName: "Aditi Rao",
-    intake: {
-      answers: {
-        name: "Aditi Rao", age: "30", city: "Pune, India", profession: "Data scientist at a healthcare company",
-        education: "Postgraduate", own_marital: "Never married", own_religion: "Hindu, Konkani", own_tongue: "Konkani",
-        age_range: NH("30 to 36"), height_range: NH("5'7\" to 6'2\""),
-        marital_open: DB("Never married"),
-        partner_location: NH("These cities: Pune, Mumbai"), relocate: "Yes, within India",
-        partner_religion: NH("Hindu"), partner_community: DM("Any"), religiousness: NH("Moderately"),
-        partner_languages: DB("English"), partner_tongue: DM("Any"),
-        min_education: NH("Postgraduate"), education_fields: NH("Engineering, science or medicine"),
-        partner_work: NH("Working full-time"), min_income: DM("Any"),
-        living_arrangement: NH("On our own, near family"), family_values: NH("Moderate"),
-        diet: DB("Vegetarian or eggetarian"), smoking: DB("Never"), drinking: NH("Occasionally"), fitness: NH("Moderately active"),
-        wants_children: NH("Yes"), children_when: NH("2–4 years"), partner_has_children: NH("No"),
-        describe: "Calm, kind and curious. Someone who reads, likes long walks, and can have a proper conversation about anything. I value honesty above everything.",
-        definite_no: "Anyone who is rude or short-tempered.",
-        other: "I swim three times a week.",
-      },
-      notes: { language: "Marathi would be a bonus." },
-    },
-    sort: {
-      summary:
-        "Aditi wants a calm, kind and curious partner in Pune or Mumbai she can talk to about anything. Vegetarian (eggs are fine), non-smoking and fluent English are firm, and she values honesty above everything.",
-      freeText: [
-        { key: "x1", category: "values_personality", label: "Calm, kind and curious", type: "soft_rule", sourceQuote: "Calm, kind and curious." },
-        { key: "x2", category: "values_personality", label: "Honest above everything", type: "soft_rule", sourceQuote: "I value honesty above everything." },
-        { key: "x3", category: "values_personality", label: "Not rude or short-tempered", type: "deal_breaker", sourceQuote: "Anyone who is rude or short-tempered." },
-        { key: "x4", category: "language", label: "Marathi would be a bonus", type: "soft_rule", sourceQuote: "Marathi would be a bonus." },
-      ],
-      followUps: [
-        {
-          question: "You're open to moving within India. Should we also look beyond Pune and Mumbai, for example Bangalore?",
-          reason: "\"These cities: Pune, Mumbai\" sits next to \"Would you move for the right person? Yes, within India\". Widening the cities could grow her pool.",
-          related: ["partner_location"],
-        },
-      ],
-    },
-  },
-
-  /** 2. Contradictions: Mumbai only vs moving abroad; age 25–28 vs 10+ years' experience; vegetarian vs sushi. */
-  "sample-2": {
+  /**
+   * THE sample: TDC's standard form filled by a sample client. Tests contradictions (Mumbai only vs
+   * moving abroad; age 25–28 vs 10+ years' experience; vegetarian vs sushi) and an importance mark that
+   * clashes with the client's own wording (smoking marked "Nice to have", note says "absolutely no smokers").
+   */
+  "standard-sample": {
     clientName: "Vikram Sethi",
     intake: {
       answers: {
@@ -450,25 +412,27 @@ export const SAMPLE_INTAKES = {
         min_education: NH("Professional degree"), education_fields: NH("CA, MBA or law"),
         partner_work: DB("Working full-time"), min_income: DM("Any"),
         living_arrangement: DB("With my parents"), family_values: NH("Traditional"),
-        diet: DB("Vegetarian only"), smoking: DB("Never"), drinking: NH("Socially"), fitness: NH("Very active"),
+        diet: DB("Vegetarian only"), smoking: NH("Never"), drinking: NH("Socially"), fitness: NH("Very active"),
         wants_children: NH("Yes"), children_when: NH("5+ years"), partner_has_children: NH("No"),
         describe: "Someone confident and independent who has seen the world. Honestly, I'm also open to moving abroad for the right person, I've always wanted to live in London for a few years. I'd love a partner who'll try sushi and street food with me anywhere we go.",
-        definite_no: "Smokers, and anyone who doesn't get along with my parents.",
+        definite_no: "Anyone who doesn't get along with my parents.",
       },
       notes: {
         location: "My practice is here and I'm not moving.",
         profession_income: "I want someone well established in her career, ideally with 10+ years of work experience.",
+        lifestyle: "Absolutely no smokers, not even socially. My father smoked and I've seen what it does.",
       },
     },
     sort: {
       summary:
-        "Vikram wants a confident, independent, well-travelled partner who is happy living with his parents in a vegetarian home. Several answers pull in different directions (Mumbai only vs moving abroad, a young age range vs 10+ years' experience), so they need clearing up before shortlisting.",
+        "Vikram wants a confident, independent, well-travelled partner who is happy living with his parents in a vegetarian home. Several answers pull in different directions (Mumbai only vs moving abroad, a young age range vs 10+ years' experience), and he marked non-smoking as only \"Nice to have\" while writing \"absolutely no smokers\", so these need clearing up before shortlisting.",
+      details: { smoking: "His note: \"Absolutely no smokers, not even socially.\"" },
       freeText: [
         { key: "x1", category: "values_personality", label: "Confident, independent, well-travelled", type: "soft_rule", sourceQuote: "Someone confident and independent who has seen the world." },
         { key: "x2", category: "location", label: "Open to moving abroad for the right person", detail: "Would like to live in London for a few years.", type: "soft_rule", sourceQuote: "I'm also open to moving abroad for the right person" },
         { key: "x3", category: "profession_income", label: "Well established, 10+ years of work experience", type: "soft_rule", sourceQuote: "I want someone well established in her career, ideally with 10+ years of work experience." },
         { key: "x4", category: "other", label: "Tries sushi and street food", type: "soft_rule", sourceQuote: "I'd love a partner who'll try sushi and street food with me anywhere we go." },
-        { key: "x5", category: "family", label: "Gets along with his parents", type: "deal_breaker", sourceQuote: "anyone who doesn't get along with my parents" },
+        { key: "x5", category: "family", label: "Gets along with his parents", type: "deal_breaker", sourceQuote: "Anyone who doesn't get along with my parents." },
       ],
       followUps: [
         {
@@ -486,140 +450,17 @@ export const SAMPLE_INTAKES = {
           reason: "Diet is a deal-breaker (\"Vegetarian only\"), but he'd love a partner who tries sushi and street food with him.",
           related: ["diet", "x4"],
         },
-      ],
-    },
-  },
-
-  /** 3. Vague free text: "decent height", "settled", "good family background", age left blank. */
-  "sample-3": {
-    clientName: "Riya Bansal",
-    intake: {
-      answers: {
-        name: "Riya Bansal", age: "29", city: "Gurgaon, India", profession: "HR business partner at a consulting firm",
-        education: "Postgraduate", own_marital: "Never married", own_religion: "Hindu, Agarwal", own_tongue: "Hindi",
-        marital_open: NH("Never married"),
-        partner_location: NH("These cities: Delhi NCR"), relocate: "Yes, within India",
-        partner_religion: NH("Hindu"), partner_community: DM("Any"), religiousness: NH("Not very"),
-        partner_languages: NH("Hindi, English"), partner_tongue: DM("Any"),
-        min_education: NH("Postgraduate"), education_fields: DM("Any"),
-        partner_work: NH("Working full-time"), min_income: { answer: "25 LPA+" },
-        living_arrangement: NH("On our own, near family"), family_values: NH("Moderate"),
-        diet: DM("Non-vegetarian is fine"), smoking: NH("Never"), drinking: NH("Occasionally"), fitness: NH("Moderately active"),
-        wants_children: NH("Yes"), children_when: NH("Not sure"), partner_has_children: NH("No"),
-        describe: "Someone mature and caring, with a good sense of humour. He should be modern but also rooted. Basically a good guy with his life in order.",
-        definite_no: "Someone who is not serious about marriage.",
-      },
-      notes: {
-        age_height: "Around my age or a little older, and decent height.",
-        religion_community: "Should respect traditions.",
-        profession_income: "Should be settled.",
-        family: "Good family background. Decent, well-mannered people with good values.",
-      },
-    },
-    sort: {
-      summary:
-        "Riya is looking for a mature, caring partner with a good sense of humour who is \"modern but rooted\" and serious about marriage. She left age and height blank and many answers are open to interpretation (settled, decent height, good family), so a short call is needed first.",
-      freeText: [
-        { key: "x1", category: "age_height", label: "Around her age or a little older", type: "soft_rule", sourceQuote: "Around my age or a little older" },
-        { key: "x2", category: "age_height", label: "Decent height", type: "soft_rule", sourceQuote: "decent height" },
-        { key: "x3", category: "religion_community", label: "Respects traditions", type: "soft_rule", sourceQuote: "Should respect traditions." },
-        { key: "x4", category: "profession_income", label: "Settled", type: "soft_rule", sourceQuote: "Should be settled." },
-        { key: "x5", category: "family", label: "Good family background", type: "soft_rule", sourceQuote: "Good family background." },
-        { key: "x6", category: "values_personality", label: "Mature, caring, good sense of humour", type: "soft_rule", sourceQuote: "Someone mature and caring, with a good sense of humour." },
-        { key: "x7", category: "values_personality", label: "Modern but rooted", type: "soft_rule", sourceQuote: "He should be modern but also rooted." },
-        { key: "x8", category: "values_personality", label: "Serious about marriage", type: "deal_breaker", sourceQuote: "Someone who is not serious about marriage." },
-      ],
-      followUps: [
-        {
-          question: "What age range would you be happy with? For example, 29 to 33?",
-          reason: "The age range was left blank. Her note says \"around my age or a little older\", which doesn't give a range to filter on.",
-          related: ["x1"],
-        },
-        {
-          question: "What does \"decent height\" mean to you, roughly in feet and inches?",
-          reason: "The height range was left blank, and \"decent height\" is too vague to act on.",
-          related: ["x2"],
-        },
-        {
-          question: "What does \"settled\" mean for you: a stable job, a certain income, owning a home, or something else?",
-          reason: "\"Should be settled\" means different things to different people.",
-          related: ["x4"],
-        },
-        {
-          question: "When you say \"good family background\", what matters most: education, values, how they treat people, or financial standing?",
-          reason: "\"Good family background\" is too vague to use when picking profiles.",
-          related: ["x5"],
-        },
-        {
-          question: "How important is a minimum income of 25 LPA: a deal-breaker or nice to have?",
-          reason: "\"Minimum annual income: 25 LPA+\" has no importance mark, so it's a soft rule for now.",
-          related: ["min_income"],
-        },
-      ],
-    },
-  },
-
-  /** 4. Children and lifestyle deal-breakers, plus an importance mark that clashes with the wording. */
-  "sample-4": {
-    clientName: "Karan Verma",
-    intake: {
-      answers: {
-        name: "Karan Verma", age: "35", city: "Hyderabad, India", profession: "Product manager at a gaming company",
-        education: "Postgraduate", own_marital: "Never married", own_religion: "Hindu, Punjabi", own_tongue: "Hindi",
-        age_range: NH("28 to 34"), height_range: DM("No preference"),
-        marital_open: NH("Never married, Divorced"),
-        relocate: "Yes, within India",
-        partner_religion: DM("Any"), partner_community: DM("Any"), religiousness: NH("Not very"),
-        partner_languages: NH("English, Hindi"), partner_tongue: DM("Any"),
-        min_education: NH("Graduate"), education_fields: DM("Any"),
-        partner_work: NH("Working or planning to work"), min_income: DM("Any"),
-        living_arrangement: NH("On our own"), family_values: NH("Liberal"),
-        diet: DM("Non-vegetarian is fine"), smoking: NH("Never"), drinking: NH("Occasionally"), fitness: DB("Very active"),
-        wants_children: DB("Yes"), children_when: DB("Within 2 years"), partner_has_children: DB("No"),
-        describe: "Warm, adventurous and outdoorsy. Someone who'd rather be on a trail than at a mall. Good with kids and patient.",
-        definite_no: "Recreational drugs, and anyone who isn't sure about having kids.",
-        other: "I'm allergic to cats, so a partner with cats won't work.",
-      },
-      notes: {
-        lifestyle: "Absolutely no smokers, not even socially. My father had lung cancer.",
-        family: "My mother may move in with us later.",
-        children: "I don't want to wait longer than 2 years, given my age.",
-      },
-    },
-    sort: {
-      summary:
-        "Karan wants a warm, adventurous, very active partner who wants children within 2 years of marriage. No drugs is firm. He marked non-smoking as only \"Nice to have\" but wrote \"absolutely no smokers\", and he left location blank.",
-      details: { smoking: "His note: \"Absolutely no smokers, not even socially.\"" },
-      freeText: [
-        { key: "x1", category: "lifestyle", label: "No recreational drugs", type: "deal_breaker", sourceQuote: "Recreational drugs" },
-        { key: "x2", category: "children", label: "Sure about wanting children", type: "deal_breaker", sourceQuote: "anyone who isn't sure about having kids" },
-        { key: "x3", category: "values_personality", label: "Warm, adventurous and outdoorsy", type: "soft_rule", sourceQuote: "Warm, adventurous and outdoorsy." },
-        { key: "x4", category: "values_personality", label: "Good with kids and patient", type: "soft_rule", sourceQuote: "Good with kids and patient." },
-        { key: "x5", category: "other", label: "No cats (he's allergic)", type: "soft_rule", sourceQuote: "I'm allergic to cats, so a partner with cats won't work." },
-        { key: "x6", category: "family", label: "His mother may move in later", type: "soft_rule", sourceQuote: "My mother may move in with us later." },
-      ],
-      followUps: [
         {
           question: "You marked a non-smoker as \"Nice to have\", but wrote \"Absolutely no smokers, not even socially\". Should this be a deal-breaker?",
-          reason: "The client's importance mark (Nice to have) doesn't match the wording. We kept his mark; please confirm with him.",
+          reason: "The client's importance mark (Nice to have) doesn't match his note. We kept his mark; please confirm with him.",
           related: ["smoking"],
-        },
-        {
-          question: "Where should your partner live? Hyderabad only, or other cities too?",
-          reason: "\"Where should your partner live?\" was left blank, and location is one of the key things matchmakers filter on.",
-          related: [],
-        },
-        {
-          question: "Is \"no cats\" a deal-breaker?",
-          reason: "\"A partner with cats won't work\" sounds firm, but it's in \"Anything else\", which has no importance mark, so it's a soft rule for now.",
-          related: ["x5"],
         },
       ],
     },
   },
 
-  /** 5. Not the standard form: a free-form email. Shows the warning; sorts what it can. */
-  "sample-5": {
+  /** Not the standard form: a free-form email. Download it from "Upload a file" and upload it to see the warning. */
+  "non-standard-sample": {
     clientName: "Neha Iyengar",
     rawText: `From: Neha Iyengar
 Subject: About me and what I'm looking for

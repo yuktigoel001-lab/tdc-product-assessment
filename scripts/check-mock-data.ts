@@ -42,9 +42,7 @@ for (const p of MOCK_PORTFOLIOS) {
 // ---------- pre-sorted sample results (demo mode) ----------
 console.log("");
 for (const sample of SAMPLE_FORMS) {
-  const sourcePath = sample.fileName.endsWith(".pdf")
-    ? join(process.cwd(), "scripts", "pdf-sources", sample.fileName.replace(/\.pdf$/, ".txt"))
-    : join(process.cwd(), "public", "sample-forms", sample.fileName);
+  const sourcePath = join(process.cwd(), "public", "sample-forms", sample.fileName);
   const form = readFileSync(sourcePath, "utf8");
   const raw = JSON.parse(readFileSync(join(process.cwd(), "data", "sample-results", `${sample.id}.json`), "utf8"));
   const parsed = sortResultSchema.safeParse(raw);

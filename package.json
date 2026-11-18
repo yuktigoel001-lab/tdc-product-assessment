@@ -8,7 +8,6 @@
     "start": "next start",
     "lint": "eslint",
     "check:data": "tsx scripts/check-mock-data.ts",
-    "make:pdfs": "tsx scripts/make-sample-pdfs.ts",
     "build:demo-data": "tsx scripts/build-demo-data.ts"
   },
   "dependencies": {
@@ -31,7 +30,6 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.4.6",
-    "pdf-lib": "^1.17.1",
     "tailwindcss": "4.3.3",
     "tsx": "^4.23.15",
     "typescript": "^5"

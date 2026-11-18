@@ -1,53 +1,28 @@
-/** The 5 sample intake forms anyone can try, each testing something different. */
-export const SAMPLE_FORMS = [
-  {
-    id: "sample-1",
-    title: "Sample 1 · Clean answers",
-    tests: "Clear answers and obvious deal-breakers (vegetarian, non-smoker, fluent English).",
-    clientName: "Aditi Rao",
-    fileName: "sample-1-clean-answers.txt",
-    mimeType: "text/plain",
-  },
-  {
-    id: "sample-2",
-    title: "Sample 2 · Contradictions",
-    tests: "Mumbai only vs moving abroad; age 25 to 28 vs 10+ years' experience; vegetarian vs sushi.",
-    clientName: "Vikram Sethi",
-    fileName: "sample-2-contradictions.txt",
-    mimeType: "text/plain",
-  },
-  {
-    id: "sample-3",
-    title: "Sample 3 · Vague answers (PDF)",
-    tests: "\"Decent height\", \"settled\", \"good family background\", blank age range, a missing importance mark.",
-    clientName: "Riya Bansal",
-    fileName: "sample-3-vague-answers.pdf",
-    mimeType: "application/pdf",
-  },
-  {
-    id: "sample-4",
-    title: "Sample 4 · Children and lifestyle (PDF)",
-    tests: "Children within 2 years, no drugs; \"Nice to have\" next to \"absolutely no smokers\"; location blank.",
-    clientName: "Karan Verma",
-    fileName: "sample-4-children-and-lifestyle.pdf",
-    mimeType: "application/pdf",
-  },
-  {
-    id: "sample-5",
-    title: "Sample 5 · Not the standard form",
-    tests: "A free-form email instead of the standard form: shows the warning and sorts what it can.",
-    clientName: "Neha Iyengar",
-    fileName: "sample-5-not-standard-form.txt",
-    mimeType: "text/plain",
-  },
-] as const satisfies readonly {
-  id: string;
-  title: string;
-  tests: string;
-  clientName: string;
-  fileName: string;
-  mimeType: "text/plain" | "application/pdf";
-}[];
+/**
+ * The sample files on the New portfolio page.
+ *  - The standard sample: TDC's standard intake form (v1), filled by a sample client ("Use a sample form" tab).
+ *  - The non-standard sample: a free-form email, downloadable from the "Upload a file" tab, to demo the warning.
+ */
+export const STANDARD_SAMPLE = {
+  id: "standard-sample",
+  title: "TDC standard intake form (v1), sample client",
+  clientName: "Vikram Sethi",
+  description:
+    "34, chartered accountant in Mumbai. Clear deal-breakers, a few answers that contradict each other, and one importance mark that doesn't match his own note.",
+  fileName: "tdc-standard-form-vikram-sethi.txt",
+  mimeType: "text/plain",
+} as const;
+
+export const NON_STANDARD_SAMPLE = {
+  id: "non-standard-sample",
+  title: "Non-standard form (a free-form email)",
+  clientName: "Neha Iyengar",
+  description: "An email from the client instead of the standard form. Upload it to see the warning.",
+  fileName: "non-standard-form-neha-iyengar.txt",
+  mimeType: "text/plain",
+} as const;
+
+export const SAMPLE_FORMS = [STANDARD_SAMPLE, NON_STANDARD_SAMPLE] as const;
 
 export type SampleId = (typeof SAMPLE_FORMS)[number]["id"];
 

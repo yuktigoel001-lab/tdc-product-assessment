@@ -2,7 +2,7 @@
   "formCheck": {
     "isStandardForm": true
   },
-  "summary": "Vikram wants a confident, independent, well-travelled partner who is happy living with his parents in a vegetarian home. Several answers pull in different directions (Mumbai only vs moving abroad, a young age range vs 10+ years' experience), so they need clearing up before shortlisting.",
+  "summary": "Vikram wants a confident, independent, well-travelled partner who is happy living with his parents in a vegetarian home. Several answers pull in different directions (Mumbai only vs moving abroad, a young age range vs 10+ years' experience), and he marked non-smoking as only \"Nice to have\" while writing \"absolutely no smokers\", so these need clearing up before shortlisting.",
   "clientDetails": {
     "age": 34,
     "city": "Mumbai",
@@ -96,8 +96,9 @@
     {
       "category": "lifestyle",
       "label": "Non-smoker",
-      "type": "deal_breaker",
-      "sourceQuote": "Smoking: Never  [Importance: Deal-breaker]"
+      "detail": "His note: \"Absolutely no smokers, not even socially.\"",
+      "type": "soft_rule",
+      "sourceQuote": "Smoking: Never  [Importance: Nice to have]"
     },
     {
       "category": "lifestyle",
@@ -158,7 +159,7 @@
       "category": "family",
       "label": "Gets along with his parents",
       "type": "deal_breaker",
-      "sourceQuote": "anyone who doesn't get along with my parents"
+      "sourceQuote": "Anyone who doesn't get along with my parents."
     }
   ],
   "followUps": [
@@ -184,6 +185,13 @@
       "relatedPreferenceIndexes": [
         13,
         23
+      ]
+    },
+    {
+      "question": "You marked a non-smoker as \"Nice to have\", but wrote \"Absolutely no smokers, not even socially\". Should this be a deal-breaker?",
+      "reason": "The client's importance mark (Nice to have) doesn't match his note. We kept his mark; please confirm with him.",
+      "relatedPreferenceIndexes": [
+        14
       ]
     }
   ]

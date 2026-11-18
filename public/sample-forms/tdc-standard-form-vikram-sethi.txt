@@ -54,10 +54,10 @@ SECTION 8: FAMILY
 
 SECTION 9: LIFESTYLE
 9.1 Diet: Vegetarian only  [Importance: Deal-breaker]
-9.2 Smoking: Never  [Importance: Deal-breaker]
+9.2 Smoking: Never  [Importance: Nice to have]
 9.3 Drinking: Socially  [Importance: Nice to have]
 9.4 Fitness: Very active  [Importance: Nice to have]
-9.5 Anything to add? -
+9.5 Anything to add? Absolutely no smokers, not even socially. My father smoked and I've seen what it does.
 
 SECTION 10: CHILDREN
 10.1 Do you want children? Yes  [Importance: Nice to have]
@@ -69,7 +69,7 @@ SECTION 11: VALUES AND PERSONALITY
 11.1 Describe the person you'd like to meet:
 Someone confident and independent who has seen the world. Honestly, I'm also open to moving abroad for the right person, I've always wanted to live in London for a few years. I'd love a partner who'll try sushi and street food with me anywhere we go.
 11.2 Is there anything that's a definite no?
-Smokers, and anyone who doesn't get along with my parents.
+Anyone who doesn't get along with my parents.
 
 SECTION 12: OTHER
 12.1 Anything else your matchmaker should know?

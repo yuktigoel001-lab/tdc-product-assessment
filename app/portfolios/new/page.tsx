@@ -3,7 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Check, ClipboardList, ExternalLink, FileText, Loader2, Sparkles, Upload, X } from "lucide-react";
+import { ArrowLeft, Check, ClipboardList, Download, Eye, FileText, Loader2, Sparkles, Upload, X } from "lucide-react";
+import { FormPreviewDialog } from "@/components/intake/form-preview-dialog";
 import { StandardFormDialog } from "@/components/intake/standard-form-dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,11 +12,10 @@ import { buildPortfolio, newPortfolioId } from "@/lib/build-portfolio";
 import { saveFormFile } from "@/lib/form-files";
 import { checkIntakeFile, formatBytes, intakeKind } from "@/lib/intake-file";
 import { CURRENT_MATCHMAKER, matchmakerName } from "@/lib/matchmakers";
-import { findSample, SAMPLE_FORMS, sampleUrl } from "@/lib/samples";
+import { NON_STANDARD_SAMPLE, sampleUrl, STANDARD_SAMPLE } from "@/lib/samples";
 import type { SortResponse } from "@/lib/sort-schema";
 import { addPortfolio } from "@/lib/store";
 import type { OriginalForm } from "@/lib/types";
-import { useAiMode } from "@/lib/use-ai-mode";
 import { cn } from "@/lib/utils";
 
 type Source = "sample" | "upload";
@@ -29,10 +29,9 @@ const STAGES: { key: Exclude<Stage, "idle">; label: string }[] = [
 
 export default function NewPortfolioPage() {
   const router = useRouter();
-  const mode = useAiMode();
-  const [clientName, setClientName] = useState("");
+  // The sample tab is selected first, so the sample client's name is filled in (and stays editable).
+  const [clientName, setClientName] = useState<string>(STANDARD_SAMPLE.clientName);
   const [source, setSource] = useState<Source>("sample");
-  const [sampleId, setSampleId] = useState<string>("");
   const [file, setFile] = useState<File | null>(null);
   const [dragging, setDragging] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -44,19 +43,16 @@ export default function NewPortfolioPage() {
     if (stageTimer.current) clearTimeout(stageTimer.current);
   }, []);
 
-  const sample = findSample(sampleId);
+  const sample = source === "sample" ? STANDARD_SAMPLE : undefined;
   const busy = stage !== "idle";
-  const demoUpload = mode === "demo" && source === "upload";
-  const canSubmit =
-    !busy && clientName.trim().length > 0 && (source === "sample" ? Boolean(sample) : Boolean(file)) && !demoUpload;
+  const canSubmit = !busy && clientName.trim().length > 0 && (source === "sample" || Boolean(file));
 
-  function pickSample(id: string) {
-    const previous = findSample(sampleId);
-    const next = findSample(id);
-    setSampleId(id);
+  function switchSource(next: Source) {
+    setSource(next);
     setError(null);
-    // Fill in the client's name from the sample, unless the matchmaker typed their own.
-    if (next && (!clientName.trim() || clientName === previous?.clientName)) setClientName(next.clientName);
+    // Pre-fill the sample client's name on the sample tab; clear it again when leaving, unless it was edited.
+    if (next === "sample" && !clientName.trim()) setClientName(STANDARD_SAMPLE.clientName);
+    if (next === "upload" && clientName === STANDARD_SAMPLE.clientName) setClientName("");
   }
 
   function pickFile(f: File | undefined) {
@@ -161,24 +157,6 @@ export default function NewPortfolioPage() {
 
           <div className="space-y-3">
             <span className="block text-sm font-medium text-ink">Filled intake form</span>
-            <div className="flex gap-2.5 rounded-lg border border-sage/25 bg-status-ready-bg/50 px-3.5 py-2.5 text-sm text-forest">
-              <ClipboardList className="mt-0.5 size-4 shrink-0" aria-hidden />
-              <p>
-                Assumes the client filled TDC&apos;s standard intake form (v1), so every client is asked the same
-                questions.{" "}
-                <StandardFormDialog
-                  trigger={(open) => (
-                    <button
-                      type="button"
-                      onClick={open}
-                      className="cursor-pointer font-medium whitespace-nowrap underline underline-offset-4 hover:text-sage"
-                    >
-                      View the standard form
-                    </button>
-                  )}
-                />
-              </p>
-            </div>
             <div role="tablist" aria-label="Form source" className="flex w-fit rounded-full border border-border p-0.5">
               {(
                 [
@@ -191,10 +169,7 @@ export default function NewPortfolioPage() {
                   type="button"
                   role="tab"
                   aria-selected={source === key}
-                  onClick={() => {
-                    setSource(key);
-                    setError(null);
-                  }}
+                  onClick={() => switchSource(key)}
                   className={cn(
                     "cursor-pointer rounded-full px-4 py-1.5 text-sm font-medium",
                     source === key ? "bg-forest text-cream-light" : "text-ink-muted hover:text-forest",
@@ -206,36 +181,51 @@ export default function NewPortfolioPage() {
             </div>
 
             {source === "sample" ? (
-              <div className="space-y-2">
-                <select
-                  value={sampleId}
-                  onChange={(e) => pickSample(e.target.value)}
-                  aria-label="Sample form"
-                  className="h-10 w-full rounded-lg border border-input bg-white px-3 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50"
-                >
-                  <option value="">Choose a sample form…</option>
-                  {SAMPLE_FORMS.map((s) => (
-                    <option key={s.id} value={s.id}>
-                      {s.title} ({s.clientName})
-                    </option>
-                  ))}
-                </select>
-                {sample && (
-                  <div className="flex items-start justify-between gap-3 rounded-lg bg-cream-light px-3.5 py-2.5 text-sm">
-                    <p className="text-ink-muted">
-                      <span className="font-medium text-ink">Tests: </span>
-                      {sample.tests}
+              <div className="rounded-lg border border-gold-light bg-cream-light p-4">
+                <div className="flex items-start gap-3">
+                  <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-white text-gold">
+                    <FileText className="size-4.5" aria-hidden />
+                  </span>
+                  <div className="min-w-0 space-y-2">
+                    <p className="font-serif text-lg leading-snug text-ink">{STANDARD_SAMPLE.title}</p>
+                    <p className="flex gap-2 text-sm text-forest">
+                      <ClipboardList className="mt-0.5 size-4 shrink-0" aria-hidden />
+                      Assumes the client filled TDC&apos;s standard intake form (v1), so every client is asked the
+                      same questions.
                     </p>
-                    <a
-                      href={sampleUrl(sample.fileName)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex shrink-0 items-center gap-1 text-forest underline-offset-4 hover:underline"
-                    >
-                      Preview <ExternalLink className="size-3.5" aria-hidden />
-                    </a>
+                    <p className="text-sm text-ink-muted">
+                      <span className="font-medium text-ink">{STANDARD_SAMPLE.clientName}: </span>
+                      {STANDARD_SAMPLE.description}
+                    </p>
+                    <div className="flex flex-wrap gap-x-4 gap-y-1 pt-1 text-sm">
+                      <FormPreviewDialog
+                        url={sampleUrl(STANDARD_SAMPLE.fileName)}
+                        fileName={STANDARD_SAMPLE.fileName}
+                        title={STANDARD_SAMPLE.title}
+                        trigger={(open) => (
+                          <button
+                            type="button"
+                            onClick={open}
+                            className="inline-flex cursor-pointer items-center gap-1 font-medium text-forest underline underline-offset-4 hover:text-sage"
+                          >
+                            <Eye className="size-3.5" aria-hidden /> Preview form
+                          </button>
+                        )}
+                      />
+                      <StandardFormDialog
+                        trigger={(open) => (
+                          <button
+                            type="button"
+                            onClick={open}
+                            className="cursor-pointer text-ink-muted underline underline-offset-4 hover:text-forest"
+                          >
+                            View the blank template
+                          </button>
+                        )}
+                      />
+                    </div>
                   </div>
-                )}
+                </div>
               </div>
             ) : (
               <div className="space-y-2">
@@ -290,12 +280,16 @@ export default function NewPortfolioPage() {
                     />
                   </label>
                 )}
-                {demoUpload && (
-                  <p className="rounded-lg border border-gold-light bg-status-followup-bg/60 px-3.5 py-2.5 text-sm text-status-followup-fg">
-                    This prototype runs on demo data only, so it can&apos;t sort your own file yet. Please use one of the
-                    sample forms instead.
-                  </p>
-                )}
+                <p className="text-xs text-ink-subtle">
+                  <a
+                    href={sampleUrl(NON_STANDARD_SAMPLE.fileName)}
+                    download={NON_STANDARD_SAMPLE.fileName}
+                    className="inline-flex items-center gap-1 font-medium text-forest underline underline-offset-4 hover:text-sage"
+                  >
+                    <Download className="size-3.5" aria-hidden /> Try a non-standard form
+                  </a>{" "}
+                  · downloads {NON_STANDARD_SAMPLE.clientName}&apos;s email; upload it here to see the warning.
+                </p>
               </div>
             )}
           </div>
